@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ACSMO 2026 — Asian Congress of Structural and Multidisciplinary Optimization</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0a1f3d;
+    --ink-2: #1e3a5f;
+    --paper: #f5f3ee;
+    --paper-2: #ebe7da;
+    --accent: #c8531a;
+    --accent-2: #e87a3e;
+    --gold: #b8860b;
+    --teal: #4a8b8b;
+    --teal-2: #6ba3a3;
+    --line: rgba(10, 31, 61, 0.1);
+    --line-strong: rgba(10, 31, 61, 0.3);
+    --shadow: 0 1px 0 rgba(10,31,61,0.06), 0 8px 24px -12px rgba(10,31,61,0.2);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background-image:
+      radial-gradient(circle at 15% 5%, rgba(74,139,139,0.05), transparent 40%),
+      radial-gradient(circle at 85% 90%, rgba(200,83,26,0.04), transparent 40%);
+    min-height: 100vh;
+  }
+
+  .container { max-width: 1700px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  /* HEADER */
+  header {
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 28px;
+    margin-bottom: 28px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 32px;
+  }
+  .masthead-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+  h1 {
+    font-family: 'Noto Serif', serif;
+    font-weight: 900;
+    font-size: clamp(28px, 4vw, 48px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+  h1 .accent { color: var(--accent); }
+  .subtitle {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: var(--ink-2);
+    margin-top: 10px;
+    max-width: 700px;
+    line-height: 1.6;
+  }
+  .meta {
+    text-align: right;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-2);
+    line-height: 1.7;
+  }
+  .meta strong { color: var(--ink); font-weight: 500; }
+
+  /* DAY TABS */
+  .day-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--line);
+    overflow-x: auto;
+  }
+  .day-tab {
+    background: none;
+    border: none;
+    padding: 14px 24px;
+    font-family: 'Noto Serif', serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink-2);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -1px;
+    white-space: nowrap;
+    transition: color 0.2s;
+  }
+  .day-tab:hover { color: var(--accent); }
+  .day-tab.active {
+    color: var(--ink);
+    border-bottom-color: var(--accent);
+  }
+  .day-tab .date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--teal);
+    display: block;
+    letter-spacing: 0.1em;
+    font-weight: 500;
+    margin-bottom: 2px;
+  }
+
+  /* VENUE SECTION */
+  .venue-section {
+    margin-bottom: 24px;
+    border: 1px solid var(--line-strong);
+    background: white;
+  }
+  .venue-toggle {
+    width: 100%;
+    background: var(--paper-2);
+    border: none;
+    padding: 14px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    font-family: 'Noto Serif', serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .venue-toggle:hover { background: #ddd6c6; }
+  .venue-toggle .vt-label { display: flex; align-items: center; gap: 12px; }
+  .venue-toggle .vt-icon {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--teal);
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .venue-toggle .vt-arrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--ink-2);
+    transition: transform 0.2s;
+  }
+  .venue-section.open .vt-arrow { transform: rotate(180deg); }
+  .venue-content {
+    display: none;
+    padding: 20px;
+    background: white;
+    border-top: 1px solid var(--line);
+  }
+  .venue-section.open .venue-content { display: block; }
+  .venue-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  .venue-grid .venue-card {
+    padding: 14px 16px;
+    background: var(--paper-2);
+    border-left: 3px solid var(--teal);
+  }
+  .venue-grid .venue-card strong {
+    display: block;
+    font-family: 'Noto Serif', serif;
+    font-size: 14px;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .venue-grid .venue-card .room-list {
+    color: var(--ink-2);
+    font-size: 12px;
+  }
+
+  /* CONTROLS / FILTERS */
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 16px;
+    align-items: center;
+  }
+  .controls-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+    margin-right: 4px;
+  }
+  .filter-btn {
+    background: white;
+    border: 1px solid var(--line-strong);
+    padding: 6px 12px;
+    font-size: 12px;
+    cursor: pointer;
+    font-family: inherit;
+    color: var(--ink-2);
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .filter-btn:hover { border-color: var(--ink); color: var(--ink); }
+  .filter-btn.active {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+  .filter-btn .dot { width: 8px; height: 8px; border: 1px solid var(--line-strong); }
+
+  /* SCHEDULE GRID */
+  .schedule-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--ink);
+    background: white;
+    box-shadow: var(--shadow);
+  }
+  .schedule {
+    display: grid;
+    min-width: 1500px;
+    grid-template-columns: 90px repeat(6, 1fr);
+  }
+  .grid-header {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px 8px;
+    font-family: 'Noto Serif', serif;
+    font-size: 12.5px;
+    font-weight: 600;
+    text-align: center;
+    border-right: 1px solid rgba(255,255,255,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    line-height: 1.3;
+  }
+  .grid-header:last-child { border-right: none; }
+  .grid-header .room-no {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: var(--accent-2);
+    margin-bottom: 2px;
+    font-weight: 500;
+  }
+  .grid-header .room-loc {
+    display: block;
+    font-size: 10px;
+    opacity: 0.65;
+    font-weight: 400;
+    margin-top: 2px;
+  }
+  .grid-header.time-head {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+  }
+  .block-marker {
+    grid-column: 1 / -1;
+    background: var(--paper-2);
+    padding: 8px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--ink-2);
+    text-transform: uppercase;
+    border-top: 2px solid var(--ink);
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .block-marker .block-time { color: var(--accent); font-weight: 500; }
+
+  .time-cell {
+    padding: 8px 6px;
+    background: var(--paper-2);
+    border-right: 1px solid var(--ink);
+    border-bottom: 1px solid var(--line);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    color: var(--ink-2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    line-height: 1.5;
+  }
+  .time-cell .time-end {
+    opacity: 0.55;
+    font-size: 10px;
+  }
+
+  .talk {
+    padding: 10px 11px;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    position: relative;
+    font-size: 11px;
+    line-height: 1.4;
+    background: white;
+    min-height: 76px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: opacity 0.2s;
+  }
+  .talk.dimmed { opacity: 0.2; }
+  .talk-title-mini {
+    font-weight: 500;
+    color: var(--ink);
+    font-size: 11px;
+    line-height: 1.35;
+  }
+  .talk-author-mini {
+    font-size: 10px;
+    color: var(--ink-2);
+    margin-top: 5px;
+    font-style: italic;
+    line-height: 1.3;
+  }
+  .talk-code-mini {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8.5px;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+    font-weight: 500;
+  }
+  .talk-cat-bar {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+  }
+  .cat-oral .talk-cat-bar { background: #4a8b8b; }
+  .cat-plenary .talk-cat-bar { background: #c8531a; }
+  .cat-keynote .talk-cat-bar { background: #b8860b; }
+  .cat-ceremony .talk-cat-bar { background: #1e3a5f; }
+
+  .talk.empty {
+    background: repeating-linear-gradient(45deg, var(--paper-2), var(--paper-2) 5px, transparent 5px, transparent 10px);
+    opacity: 0.35;
+  }
+  .talk.break-cell {
+    background: var(--paper-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink-2);
+    font-style: italic;
+    font-size: 11px;
+  }
+  .talk.break-cell .break-label { color: var(--ink-2); opacity: 0.75; }
+
+  /* Hover effect on clickable talks */
+  .talk:not(.empty):not(.break-cell):not(.event-cell) {
+    cursor: pointer;
+    transition: background 0.15s, box-shadow 0.15s;
+  }
+  .talk:not(.empty):not(.break-cell):not(.event-cell):hover {
+    background: #fffbf5;
+    box-shadow: inset 0 0 0 2px var(--accent);
+    z-index: 2;
+  }
+
+  /* Full-row events */
+  .full-row {
+    grid-column: 2 / -1;
+    color: var(--paper);
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--line);
+  }
+  .full-row.lunch { background: #1e3a5f; text-align: center; }
+  .full-row.break { background: var(--paper-2); color: var(--ink-2); font-style: italic; text-align: center; }
+  .full-row.ceremony { background: var(--accent); }
+  .full-row.plenary { background: var(--ink); }
+  .full-row.event { background: var(--teal); }
+  .full-row .row-title { font-family: 'Noto Serif', serif; font-weight: 600; font-size: 14px; }
+  .full-row .row-desc {
+    margin-top: 8px;
+    font-size: 12px;
+    line-height: 1.6;
+    color: rgba(245,243,238,0.85);
+    font-weight: 400;
+  }
+  .full-row .row-desc p { margin-bottom: 4px; }
+  .full-row .row-desc strong { color: var(--accent-2); font-weight: 500; font-family: 'JetBrains Mono', monospace; font-size: 11px; margin-right: 4px; }
+  .full-row.break .row-desc, .full-row.lunch .row-desc { color: rgba(245,243,238,0.85); }
+  .full-row.break .row-desc { color: var(--ink-2); }
+  .full-row.event.clickable { cursor: pointer; }
+  .full-row.event.clickable:hover { filter: brightness(1.1); }
+
+  /* Session header row */
+  .session-head-time {
+    padding: 6px 8px;
+    background: var(--ink);
+    color: var(--paper);
+    border-right: 1px solid rgba(255,255,255,0.1);
+    border-bottom: 1px solid var(--line-strong);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .session-head-cell {
+    padding: 7px 9px;
+    background: var(--paper-2);
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line-strong);
+    font-size: 10.5px;
+    line-height: 1.3;
+    font-weight: 600;
+    color: var(--ink);
+    position: relative;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .session-head-cell:hover { background: #ddd6c6; }
+  .session-head-cell .sh-code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    font-weight: 600;
+    display: block;
+    margin-bottom: 2px;
+  }
+  .session-head-cell .sh-chair {
+    font-size: 9.5px;
+    color: var(--ink-2);
+    font-weight: 400;
+    font-style: italic;
+    margin-top: 3px;
+  }
+  .session-head-cell.empty { background: var(--paper-2); opacity: 0.4; cursor: default; }
+  .session-head-cell.empty:hover { background: var(--paper-2); }
+  .session-head-cell .cat-stripe {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--teal);
+  }
+
+  /* MODAL */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 31, 61, 0.6);
+    backdrop-filter: blur(4px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 24px;
+    animation: fadeIn 0.18s ease;
+  }
+  .modal-backdrop.show { display: flex; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes slideUp { from { transform: translateY(16px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+  .modal {
+    background: var(--paper);
+    max-width: 820px;
+    width: 100%;
+    max-height: 86vh;
+    overflow-y: auto;
+    border: 1px solid var(--ink);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    animation: slideUp 0.22s ease;
+  }
+  .modal-header {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 24px 28px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .modal-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: var(--accent-2);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    display: block;
+  }
+  .modal-title {
+    font-family: 'Noto Serif', serif;
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 1.35;
+  }
+  .modal-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    color: rgba(245,243,238,0.75);
+    margin-top: 8px;
+    line-height: 1.6;
+  }
+  .modal-meta strong { color: var(--paper); font-weight: 500; }
+  .modal-close {
+    background: none;
+    border: 1px solid rgba(245,243,238,0.3);
+    color: var(--paper);
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    font-size: 18px;
+    flex-shrink: 0;
+    line-height: 1;
+    transition: all 0.15s;
+  }
+  .modal-close:hover { background: var(--accent); border-color: var(--accent); }
+  .modal-body { padding: 24px 28px 28px; }
+
+  .talk-full-title {
+    font-family: 'Noto Serif', serif;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.45;
+    color: var(--ink);
+    margin-bottom: 12px;
+  }
+  .talk-full-authors {
+    font-size: 13.5px;
+    color: var(--ink);
+    line-height: 1.7;
+    padding: 14px 16px;
+    background: white;
+    border-left: 3px solid var(--accent);
+  }
+  .talk-full-authors .presenter {
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .talk-full-code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+    margin-top: 12px;
+    display: block;
+  }
+
+  .session-talk-list {
+    list-style: none;
+    margin-top: 8px;
+  }
+  .session-talk-list li {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: 70px 1fr;
+    gap: 12px;
+    font-size: 12px;
+  }
+  .session-talk-list li:last-child { border-bottom: none; }
+  .stl-time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    font-weight: 500;
+    padding-top: 1px;
+  }
+  .stl-content { line-height: 1.45; min-width: 0; }
+  .stl-title { color: var(--ink); font-weight: 500; font-size: 12.5px; }
+  .stl-author { color: var(--ink-2); font-size: 11px; margin-top: 3px; font-style: italic; }
+  .stl-code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+    margin-top: 2px;
+  }
+
+  .modal-section {
+    margin-bottom: 18px;
+  }
+  .modal-section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .session-info-box {
+    background: var(--paper-2);
+    padding: 14px 16px;
+    border-left: 3px solid var(--teal);
+    font-size: 13px;
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+
+  /* Footer */
+  .footer-note {
+    margin-top: 28px;
+    padding: 16px 20px;
+    background: var(--paper-2);
+    border-left: 3px solid var(--ink);
+    font-size: 12px;
+    color: var(--ink-2);
+    line-height: 1.7;
+  }
+  .footer-note strong { color: var(--ink); }
+  .hint {
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    color: var(--ink-2);
+    margin-top: 14px;
+    letter-spacing: 0.1em;
+  }
+  .hint::before, .hint::after {
+    content: "—";
+    margin: 0 12px;
+    color: var(--accent);
+  }
+
+  /* Mobile */
+  @media (max-width: 768px) {
+    .container { padding: 24px 12px 60px; }
+    header { grid-template-columns: 1fr; }
+    .meta { text-align: left; }
+    .venue-grid { grid-template-columns: 1fr; }
+    .modal-header { padding: 20px; }
+    .modal-body { padding: 20px; }
+    .modal-title { font-size: 17px; }
+    .session-talk-list li { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div>
+      <div class="masthead-label">ACSMO · ASIAN CONGRESS · ISSMO ENDORSED</div>
+      <h1>ACSMO <span class="accent">2026</span><br>Structural &amp; Multidisciplinary Optimization</h1>
+      <p class="subtitle">Asian Congress of Structural and Multidisciplinary Optimization — Click any talk for full title, authors, and affiliations. Click session headers for full session listings.</p>
+    </div>
+    <div class="meta">
+      <strong>Dates</strong> May 17 ~ 21, 2026<br>
+      <strong>Venue</strong> BEXCO, Busan, Korea<br>
+      <strong>Talks</strong> 252 oral presentations
+    </div>
+  </header>
+
+  <nav class="day-tabs">
+    <button class="day-tab active" data-day="mon"><span class="date">05 / 18 MON</span>Monday — Plenary + Sessions</button>
+    <button class="day-tab" data-day="tue"><span class="date">05 / 19 TUE</span>Tuesday — Keynote + Sessions</button>
+    <button class="day-tab" data-day="wed"><span class="date">05 / 20 WED</span>Wednesday — Sessions + Banquet</button>
+  </nav>
+
+  <section class="venue-section" id="venueSection">
+    <button class="venue-toggle" id="venueToggle" type="button">
+      <span class="vt-label">
+        <span class="vt-icon">VENUE</span>
+        <span>BEXCO Room Map · 6 Oral Session Rooms</span>
+      </span>
+      <span class="vt-arrow">▼</span>
+    </button>
+    <div class="venue-content">
+      <div class="venue-grid">
+        <div class="venue-card">
+          <strong>Plenary &amp; Joint Sessions</strong>
+          <div class="room-list">Room 1+2 (214–216) — Opening Ceremony, Plenary Lectures, Keynote Lectures</div>
+        </div>
+        <div class="venue-card">
+          <strong>Oral Session Rooms (6 parallel tracks)</strong>
+          <div class="room-list">Room 1 (214–215) · Room 2 (216) · Room 3 (217) · Room 4 (218) · Room 5 (213) · Room 6 (212)</div>
+        </div>
+        <div class="venue-card">
+          <strong>Special Events</strong>
+          <div class="room-list">Welcome Reception — Room 311–313 (Mon) · ASSMO EC/GC Meeting — Room 211 (Mon) · Banquet — Convention Hall Room 301 Grand Ballroom (Wed)</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="controls">
+    <span class="controls-label">FILTER</span>
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="oral"><span class="dot" style="background:#4a8b8b"></span>Oral Sessions</button>
+  </div>
+
+  <div class="schedule-wrap">
+    <div class="schedule" id="schedule"></div>
+  </div>
+
+  <p class="hint">Click any talk for details · Click session headers for full session listings</p>
+
+  <div class="footer-note">
+    <strong>Note</strong> · This is an unofficial interactive schedule generated from the ACSMO 2026 Program Book. Please verify with the official program for any updates. · Plenary Lectures and Keynote Lectures are held in Room 1+2 (214–216) and are joint sessions across all tracks.
+  </div>
+</div>
+
+<div class="modal-backdrop" id="modal">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-header">
+      <div style="min-width:0; flex:1">
+        <span class="modal-tag" id="modalTag"></span>
+        <h2 class="modal-title" id="modalTitle"></h2>
+        <div class="modal-meta" id="modalMeta"></div>
+      </div>
+      <button class="modal-close" id="modalClose" aria-label="Close">×</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+const DATA = {"sessions":{"MA1":{"name":"Topology Optimization (1)","room_no":"1","room_loc":"214-215","chair":"Naoyuki Ishida (Kyoto University)","day":"Monday, May 18","time_start":"13:20","time_end":"15:20"},"MA2":{"name":"Topology Optimization (10)","room_no":"2","room_loc":"216","chair":"Kentaro Yaji (The University of Osaka)","day":"Monday, May 18","time_start":"13:20","time_end":"15:20"},"MA3":{"name":"Reliability Analysis and Reliability-Based Design Optimization (1)","room_no":"3","room_loc":"217","chair":"Gang-Won Jang (Sejong University)","day":"Monday, May 18","time_start":"13:20","time_end":"15:20"},"MA4":{"name":"Approximation Techniques","room_no":"4","room_loc":"218","chair":"Satoshi Kitayama (Kanazawa University)","day":"Monday, May 18","time_start":"13:20","time_end":"15:20"},"MA5":{"name":"Optimization Theory and Algorithms","room_no":"5","room_loc":"213","chair":"Masao Arakawa (Waseda University)","day":"Monday, May 18","time_start":"13:20","time_end":"15:20"},"MA6":{"name":"Generative Design (1)","room_no":"6","room_loc":"212","chair":"Namwoo Kang (KAIST)","day":"Monday, May 18","time_start":"13:20","time_end":"15:20"},"MB1":{"name":"Topology Optimization (2)","room_no":"1","room_loc":"214-215","chair":"Shutian Liu (Dalian University of Technology)","day":"Monday, May 18","time_start":"15:40","time_end":"17:40"},"MB2":{"name":"Topology Optimization (11)","room_no":"2","room_loc":"216","chair":"In Gwun Jang (KAIST)","day":"Monday, May 18","time_start":"15:40","time_end":"17:40"},"MB3":{"name":"Reliability Analysis and Reliability-Based Design Optimization (2)","room_no":"3","room_loc":"217","chair":"Yoshihiro Kanno (The University of Tokyo)","day":"Monday, May 18","time_start":"15:40","time_end":"17:40"},"MB4":{"name":"Surrogate-Based Design Optimization (1)","room_no":"4","room_loc":"218","chair":"Wataru Yamazaki (Nagaoka University of Technology)","day":"Monday, May 18","time_start":"15:40","time_end":"17:40"},"MB5":{"name":"Aerospace, Automotive, and Mobility Systems (1)","room_no":"5","room_loc":"213","chair":"Makoto Yamakawa (Tokyo University of Science)","day":"Monday, May 18","time_start":"15:40","time_end":"17:40"},"MB6":{"name":"Generative Design (2)","room_no":"6","room_loc":"212","chair":"Weifei Hu (Zhejiang University)","day":"Monday, May 18","time_start":"15:40","time_end":"17:40"},"TA1":{"name":"Topology Optimization (3)","room_no":"1","room_loc":"214-215","chair":"In Gwun Jang (KAIST)","day":"Tuesday, May 19","time_start":"08:40","time_end":"10:20"},"TA2":{"name":"Topology Optimization (12)","room_no":"2","room_loc":"216","chair":"Fumiya Okazaki (Institute of Science Tokyo)","day":"Tuesday, May 19","time_start":"08:40","time_end":"10:20"},"TA3":{"name":"Model Verification and Validation","room_no":"3","room_loc":"217","chair":"Sooyoung Lee (Chung-Ang University)","day":"Tuesday, May 19","time_start":"08:40","time_end":"10:20"},"TA4":{"name":"Surrogate-Based Design Optimization (2)","room_no":"4","room_loc":"218","chair":"Jeong Sam Han (Gyeongkuk National University)","day":"Tuesday, May 19","time_start":"08:40","time_end":"10:20"},"TA5":{"name":"Aerospace, Automotive, and Mobility Systems (2)","room_no":"5","room_loc":"213","chair":"Maxim Tyan (New Uzbekistan University)","day":"Tuesday, May 19","time_start":"08:40","time_end":"10:20"},"TA6":{"name":"Agent- and LLM-Based Analysis and Design (1)","room_no":"6","room_loc":"212","chair":"Dongjin Lee (Hanyang University)","day":"Tuesday, May 19","time_start":"08:40","time_end":"10:20"},"TB1":{"name":"Topology Optimization (4)","room_no":"1","room_loc":"214-215","chair":"Akihiro Takezawa (Waseda University)","day":"Tuesday, May 19","time_start":"10:40","time_end":"12:20"},"TB2":{"name":"Topology Optimization (13)","room_no":"2","room_loc":"216","chair":"Hyoung Jun Lim (Gyeongsang National University)","day":"Tuesday, May 19","time_start":"10:40","time_end":"12:20"},"TB3":{"name":"Machine Learning, and Deep Learning (1)","room_no":"3","room_loc":"217","chair":"Sooyoung Lee (Chung-Ang University)","day":"Tuesday, May 19","time_start":"10:40","time_end":"12:20"},"TB4":{"name":"Surrogate-Based Design Optimization (3)","room_no":"4","room_loc":"218","chair":"Chang-Wan Kim (Konkuk University)","day":"Tuesday, May 19","time_start":"10:40","time_end":"12:20"},"TB5":{"name":"Aerospace, Automotive, and Mobility Systems (3)","room_no":"5","room_loc":"213","chair":"Sunghoon Lim (Kyoto University)","day":"Tuesday, May 19","time_start":"10:40","time_end":"12:20"},"TB6":{"name":"Agent- and LLM-Based Analysis and Design (2)","room_no":"6","room_loc":"212","chair":"Hayoung Chung (Ulsan National Institute of Science and Technology)","day":"Tuesday, May 19","time_start":"10:40","time_end":"12:20"},"TC1":{"name":"Topology Optimization (5)","room_no":"1","room_loc":"214-215","chair":"Zhan Kang (Dalian University of Technology)","day":"Tuesday, May 19","time_start":"16:00","time_end":"17:40"},"TC2":{"name":"Topology Optimization (14)","room_no":"2","room_loc":"216","chair":"Jikai Liu (Shandong University)","day":"Tuesday, May 19","time_start":"16:00","time_end":"17:40"},"TC3":{"name":"Machine Learning, and Deep Learning (2)","room_no":"3","room_loc":"217","chair":"Yuan Liang (Dalian University of Technology)","day":"Tuesday, May 19","time_start":"16:00","time_end":"17:40"},"TC4":{"name":"Model Order Reduction and Benchmarking Studies","room_no":"4","room_loc":"218","chair":"Junghwan Kook (Gyeongsang National University)","day":"Tuesday, May 19","time_start":"16:00","time_end":"17:40"},"TC5":{"name":"Aerospace, Automotive, and Mobility Systems (4)","room_no":"5","room_loc":"213","chair":"Kazuyuki Hanahara (Iwate University)","day":"Tuesday, May 19","time_start":"16:00","time_end":"17:40"},"TC6":{"name":"Physics-Informed AI Modeling (1)","room_no":"6","room_loc":"212","chair":"Yun-ho Shin (Pusan National University)","day":"Tuesday, May 19","time_start":"16:00","time_end":"17:40"},"WA1":{"name":"Topology Optimization (6)","room_no":"1","room_loc":"214-215","chair":"Takayuki Yamada (The University of Tokyo)","day":"Wednesday, May 20","time_start":"08:40","time_end":"10:20"},"WA2":{"name":"Topology Optimization (15)","room_no":"2","room_loc":"216","chair":"Ungki Lee (Korea University)","day":"Wednesday, May 20","time_start":"08:40","time_end":"10:20"},"WA3":{"name":"Machine Learning, and Deep Learning (3)","room_no":"3","room_loc":"217","chair":"Chan Hee Park (University of Seoul)","day":"Wednesday, May 20","time_start":"08:40","time_end":"10:20"},"WA4":{"name":"Size Optimization (1)","room_no":"4","room_loc":"218","chair":"Sangho Kim (Konkuk University)","day":"Wednesday, May 20","time_start":"08:40","time_end":"10:20"},"WA5":{"name":"Aerospace, Automotive, and Mobility Systems (5)","room_no":"5","room_loc":"213","chair":"Teng Long (Beijing Institute of Technology)","day":"Wednesday, May 20","time_start":"08:40","time_end":"10:20"},"WA6":{"name":"Physics-Informed AI Modeling (2)","room_no":"6","room_loc":"212","chair":"Weisheng Zhang (Dalian University of Technology)","day":"Wednesday, May 20","time_start":"08:40","time_end":"10:20"},"WB1":{"name":"Topology Optimization (7)","room_no":"1","room_loc":"214-215","chair":"Jaeyub Hyun (Pukyong National University)","day":"Wednesday, May 20","time_start":"10:40","time_end":"12:20"},"WB2":{"name":"Topology Optimization (16)","room_no":"2","room_loc":"216","chair":"Jike Han (Kyoto University)","day":"Wednesday, May 20","time_start":"10:40","time_end":"12:20"},"WB3":{"name":"Machine Learning, and Deep Learning (4)","room_no":"3","room_loc":"217","chair":"Xiaoya Zhai (University of Science and Technology of China)","day":"Wednesday, May 20","time_start":"10:40","time_end":"12:20"},"WB4":{"name":"Size Optimization (2)","room_no":"4","room_loc":"218","chair":"Peng Hao (Dalian University of Technology)","day":"Wednesday, May 20","time_start":"10:40","time_end":"12:20"},"WB5":{"name":"Mechanical, Manufacturing, and Process Engineering (1)","room_no":"5","room_loc":"213","chair":"Bin Niu (Dalian University of Technology)","day":"Wednesday, May 20","time_start":"10:40","time_end":"12:20"},"WB6":{"name":"Energy, Environmental, and Sustainable Technologies (1)","room_no":"6","room_loc":"212","chair":"Donghyeon Ryu (New Mexico Tech)","day":"Wednesday, May 20","time_start":"10:40","time_end":"12:20"},"WC1":{"name":"Topology Optimization (8)","room_no":"1","room_loc":"214-215","chair":"Zongliang Du (Dalian University of Technology)","day":"Wednesday, May 20","time_start":"13:40","time_end":"15:20"},"WC2":{"name":"Topology Optimization (17)","room_no":"2","room_loc":"216","chair":"Soo-Ho Jo (Dongguk University)","day":"Wednesday, May 20","time_start":"13:40","time_end":"15:20"},"WC3":{"name":"Machine Learning, and Deep Learning (5)","room_no":"3","room_loc":"217","chair":"Jaewook Lee (Gwangju Institute of Science and Technology)","day":"Wednesday, May 20","time_start":"13:40","time_end":"15:20"},"WC4":{"name":"Shape Optimization","room_no":"4","room_loc":"218","chair":"Masatoshi Shimoda (Toyota Technological Institute)","day":"Wednesday, May 20","time_start":"13:40","time_end":"15:20"},"WC5":{"name":"Mechanical, Manufacturing, and Process Engineering (2)","room_no":"5","room_loc":"213","chair":"Zunyi Duan (Northwestern Polytechnical University)","day":"Wednesday, May 20","time_start":"13:40","time_end":"15:20"},"WC6":{"name":"Energy, Environmental, and Sustainable Technologies (2)","room_no":"6","room_loc":"212","chair":"Dongil Shin (Pohang University of Science and Technology)","day":"Wednesday, May 20","time_start":"13:40","time_end":"15:20"},"WD1":{"name":"Topology Optimization (9)","room_no":"1","room_loc":"214-215","chair":"Yafeng Wang (Zhejiang University)","day":"Wednesday, May 20","time_start":"15:40","time_end":"17:20"},"WD2":{"name":"Design Method","room_no":"2","room_loc":"216","chair":"Hansu Kim (Gachon University)","day":"Wednesday, May 20","time_start":"15:40","time_end":"17:20"},"WD3":{"name":"Machine Learning, and Deep Learning (6)","room_no":"3","room_loc":"217","chair":"Yoojeong Noh (Pusan National University)","day":"Wednesday, May 20","time_start":"15:40","time_end":"17:20"},"WD4":{"name":"Mechanical, Manufacturing, and Process Engineering (4)","room_no":"4","room_loc":"218","chair":"Minho Yoon (University of Seoul)","day":"Wednesday, May 20","time_start":"15:40","time_end":"17:20"},"WD5":{"name":"Mechanical, Manufacturing, and Process Engineering (3)","room_no":"5","room_loc":"213","chair":"Palaniappan Ramu (Indian Institute of Technology Madras)","day":"Wednesday, May 20","time_start":"15:40","time_end":"17:20"},"WD6":{"name":"Other Related Topics for Optimization","room_no":"6","room_loc":"212","chair":"Haichao An (Beijing Institute of Technology)","day":"Wednesday, May 20","time_start":"15:40","time_end":"17:20"}},"talks":[{"code":"MA1-1","paper":"P00004","time":"13:20 ~ 13:40","title":"A Generalized Energy-Strain-Combined Material Interpolation Scheme for Finite Strain Topology Optimization","authors":"Jike Han* (Kyoto University), Zhaoyou Sun and Yangjun Luo (Harbin Institute of Technology), Kazuhiro Izui and Shinji Nishiwaki (Kyoto University)"},{"code":"MA1-2","paper":"P00008","time":"13:40 ~ 14:00","title":"Multi-Material Decomposition Optimization for Topology-Optimized Structures Considering Additive Manufacturing Build Volume and Material Cost","authors":"Hansu Kim (Gachon University), Il Yong Kim* (Queen’s University)"},{"code":"MA1-3","paper":"P00010","time":"14:00 ~ 14:20","title":"Topology Optimization of Multi-Component Systems with Static Condensation","authors":"Ahmed Almansour and Nam-Ho Kim* (University of Florida)"},{"code":"MA1-4","paper":"P00018","time":"14:20 ~ 14:40","title":"Defect State Phononic Crystal Design with Topology Optimization","authors":"Xinlin Xu*, Koji Nishiguchi, and Junji Kato (Nagoya University)"},{"code":"MA1-5","paper":"P00031","time":"14:40 ~ 15:00","title":"Visualization-Based Framework for Quantifying Non-Linearity in Topology Optimization","authors":"Jiahua Wu*, Ziliang Wang, Jun Yang, and Shintaro Yamasaki (Waseda University)"},{"code":"MA1-6","paper":"P00032","time":"15:00 ~ 15:20","title":"Topology Optimization Using Surrogate-Assisted Differential Evolution with Discrete Cosine Transform Design Variables","authors":"Jungin Kim (Gyeongsang National University), Jaewan Lee (Gyeongnam Aerospace & Defense Institute of Science and Technology), Junghwan Kook* (Gyeongsang National University)"},{"code":"MA2-1","paper":"P00271","time":"13:20 ~ 13:40","title":"Morphological Crossover: Beyond Intractable Topology Optimization","authors":"Kentaro Yaji* (The University of Osaka)"},{"code":"MA2-2","paper":"P00277","time":"13:40 ~ 14:00","title":"Explicit Topology Optimization of Thin-Walled Stiffened Structures Under Harmonic Excitation","authors":"Haotian Yang, Renjing Gao, and Shutian Liu* (Dalian University of Technology)"},{"code":"MA2-3","paper":"P00285","time":"14:00 ~ 14:20","title":"Neural Network-Based Two-Scale Concurrent Topology Optimization for Multi- Phase Composite Lattice Structures Considering Interface Connectivity","authors":"Jinlong Tang and Shutian Liu* (Dalian University of Technology)"},{"code":"MA2-4","paper":"P00291","time":"14:20 ~ 14:40","title":"Multiscale Thermo-Fluid Topology Optimization Using the Lattice Boltzmann Method with Effective-Property Modeling","authors":"Yuto Kikuchi, Kentaro Yaji*, and Kikuo Fujita (The University of Osaka)"},{"code":"MA2-5","paper":"P00301","time":"14:40 ~ 15:00","title":"Additive Manufacturing Oriented Explicitly Geometry Driven Topology Optimization for Cooling Channel Design","authors":"Shuzhi Xu and Kentaro Yaji* (The University of Osaka)"},{"code":"MA2-6","paper":"P00307","time":"15:00 ~ 15:20","title":"Stability-Oriented Structural Topology Optimization Under Combined Permanent and Variable Loads: From Passive Stability Design to Active Buckling Control","authors":"Yafeng Wang” (Zhejiang University), Ole Sigmund (Technical University of Denmark)"},{"code":"MA3-1","paper":"P00020","time":"13:20 ~ 13:40","title":"A Modeling and Uncertainty Analysis Method for TPMS Lattices Incorporating Metal Additive Manufacturing-Induced Geometric Defects","authors":"Guozhen An and Zhan Kang” (Dalian university of technology)"},{"code":"MA3-2","paper":"P00085","time":"13:40 ~ 14:00","title":"The Impact of Variable Correlations on Distributed Multidisciplinary Uncertainty Analysis in Launch Vehicle Design","authors":"Rui Guo, Hua Su*, and Chunlin Gong (Northwestern Polytechnical University)"},{"code":"MA3-3","paper":"P00086","time":"14:00 ~ 14:20","title":"A Distributed Multidisciplinary Uncertainty Propagation Method Considering Variable Correlations for Launch Vehicle Design","authors":"Hua Su*, Rui Guo, and Chunlin Gong (Northwestern Polytechnical University)"},{"code":"MA3-4","paper":"P00256","time":"14:20 ~ 14:40","title":"An Investigation of Optimal Nonlinearity for a Bistable Vibration Energy Harvester Subject to Non-Gaussian Random Excitation","authors":"Takahiro Tsuchida* and Ryuji Inoue (Institute of Science Tokyo)"},{"code":"MA3-5","paper":"P00019","time":"14:40 ~ 15:00","title":"LARA-PINN-RA: A Loss-Aware Runtime-Adaptive Physics-Informed Neural Network Framework for Reliability Analysis","authors":"Pengwang Jin and Zhan Kang” (Dalian University of Technology)"},{"code":"MA3-6","paper":"P00046","time":"15:00 ~ 15:20","title":"Reliability-Based Design Optimization of Trusses via Worst-Case Buffered Failure Probability of Compliance","authors":"Takumi Fujiyama* and Yoshihiro Kanno (The University of Tokyo)"},{"code":"MA4-1","paper":"P00047","time":"13:20 ~ 13:40","title":"Implementation of Homogenization Method for Heat Conductor with Interfacial Thermal Resistance","authors":"Yuu Sakaguchi* and Takayuki Yamada (The University of Tokyo)"},{"code":"MA4-2","paper":"P00064","time":"13:40 ~ 14:00","title":"A Novel Multi-Fidelity Kriging Model with An Active Learning Strategy for Efficient Reliability Analysis","authors":"Zongrui Tian, Wanxin He, and Gang Li* (Dalian University of Technology)"},{"code":"MA4-3","paper":"P00106","time":"14:00 ~ 14:20","title":"High-Order Homogenization Method for Elastic Wave Propagation Analysis and Evaluation of Material Properties","authors":"Kouki Chiba* and Takayuki Yamada (The University of Tokyo)"},{"code":"MA4-4","paper":"P00172","time":"14:20 ~ 14:40","title":"Multi-Fidelity Approximation and Transfer Learning for 3D Surface Quality in Foldable Displays","authors":"Jaemin Jeon*, Seongjin Kim, Gabseong Lee, Wonjae Kim, and Chulhwan Lee (Samsung Electronics Co., Ltd.)"},{"code":"MA4-5","paper":"P00227","time":"14:40 ~ 15:00","title":"A Deep Learning Reduced-Order Modeling Framework for Nonlinear Finite Element Dynamics of Rubber Component","authors":"Jeong Sam Han* (Gyeongkuk National University)"},{"code":"MA4-6","paper":"P00258","time":"15:00 ~ 15:20","title":"Enhanced Multi-Fidelity Kriging Model with Correlation Tuning and Discrepancy Learning","authors":"Sanghyun Cho and Gunwoo Noh* (Korea University)"},{"code":"MA5-1","paper":"P00072","time":"13:20 ~ 13:40","title":"Trajectory-Aware Sequential Sampling for Bayesian Optimization","authors":"Sungkyu Choi and Ungki Lee* (Korea University)"},{"code":"MA5-2","paper":"P00187","time":"13:40 ~ 14:00","title":"An Improved PSO Algorithm Based on Biological Foraging and Territorial Strategies","authors":"Shifan Deng* and Masao Arakawa (Waseda University)"},{"code":"MA5-3","paper":"P00266","time":"14:00 ~ 14:20","title":"Multi-Scale Optimization of Compliant Structures for Embedded Movable Piezoelectric Actuation","authors":"Jingyu Hu and Shutian Liu* (Dalian University of Technology)"},{"code":"MA5-4","paper":"P00091","time":"14:20 ~ 14:40","title":"Correction Approach for the Moving Morphable Components (MMC) Framework Based on Reinforcement Learning Longyin Xie* and Weisheng Zhang (Dalian University of Technology) MAS5-5 P00118 A Sensitivity Analysis for Rarefied Gas Flows Using the Discrete Velocity Method and Woodbury Matrix Identity Kaiwen Guan and Takayuki Yamada* (The University of Tokyo) MAS5-6 P00205 Global Optimality Search of Small-Scale Discrete Continuum Structural Topology Optimization","authors":"Tongxing Zuo (Kunming University of Science and Technology), Chong Wang and Qianglong Wang (Changchun Institute of Optics, Fine Mechanics and Physics (CIOMP), Chinese Academy of Science), Haitao Han (Guizhou Institute of Technology), Qiangwei Zhao (Changchun Institute of Optics, Fine Mechanics and Physics (CIOMP), Chinese Academy of Science), Zhenyu Miao (Suzhou Institute of Trade and Commerce), Zhenyu Liu* (Changchun Institute of Optics, Fine Mechanics and Physics (CIOMP), Chinese Academy of Science)"},{"code":"MA6-1","paper":"P00039","time":"13:20 ~ 13:40","title":"Transformer-Based Latent Diffusion Model for Inverse Design of Phononic Crystals with Structural Variability Donghyu Lee, Taehun Kim, Ju Hwan Han, and Sayhee Kim (Seoul National","authors":"University), Soo-Ho Jo (Dongguk University), Byeng Dong Youn” (Seoul National University)"},{"code":"MA6-2","paper":"P00080","time":"13:40 ~ 14:00","title":"Virtual Sample Generation and Generative Adversarial Network Assisted Method for Flight Vehicle Small-Sample Generative Design","authors":"Haoda Li, Teng Long, Renhe Shi*, Yao Zhang, Ziyu Wang, and Nianhui Ye (Beijing Institute of Technology)"},{"code":"MA6-3","paper":"P00165","time":"14:00 ~ 14:20","title":"Conditional Variational Autoencoder-Based Aircraft Initial Concept Generation with SHAP-Driven Configuration Pattern Analysis","authors":"Min Ji Kim, Zin Win Thu, and Jae-Woo Lee* (Konkuk University)"},{"code":"MA6-4","paper":"P00175","time":"14:20 ~ 14:40","title":"Efficient Aircraft Design through Deep Generative Modeling","authors":"Zin Win Thu, Min Ji Kim, and Jae-Woo Lee* (Konkuk University)"},{"code":"MA6-5","paper":"P00176","time":"14:40 ~ 15:00","title":"AI-Based Inverse Design of Motor Housings via Generative and Predictive Models","authors":"Dayeon Jeong and Seho Son (Hanyang University), YeonJong Kim (Hyundai Motor Company), Ki-Yong Oh* (Hanyang University)"},{"code":"MA6-6","paper":"P00201","time":"15:00 ~ 15:20","title":"A Conditional Airfoil Generative Design Method Based on Denoising Diffusion Probabilistic Models Chang Jin, Weifei Hu*, Jianhao Fang, Haotian Mo, Xinyu Chen, and Jiquan Yan","authors":"(Zhejiang University)"},{"code":"MB1-1","paper":"P00038","time":"15:40 ~ 16:00","title":"A Novel Crack-Safe Topology Optimization Informed by Peridynamics","authors":"Weisheng Zhang”* and Yuan Liu (Dalian University of Technology)"},{"code":"MB1-2","paper":"P00040","time":"16:00 ~ 16:20","title":"An Efficient Topology Optimization Framework Based on Successive Iteration of Analysis and Design","authors":"Yu Cao and Zhan Kang* (Dalian University of Technology)"},{"code":"MB1-3","paper":"P00045","time":"16:20 ~ 16:40","title":"Topology Optimization of Multi-Material Structures Under Dynamic Thermo- Viscoelastic Effects","authors":"Guangwei Liu, Weihao Zhou*, Koji Nishiguchi, and Junji Kato (Nagoya University)"},{"code":"MB1-4","paper":"P00049","time":"16:40 ~ 17:00","title":"On Topology Optimization for Thermal Radiation Problems Considering Mutual Radiation","authors":"Shun Noguchi*, Naoyuki Ishida, Shinji Nishiwaki, and Kazuhiro Izui (Kyoto University)"},{"code":"MB1-5","paper":"P00056","time":"17:00 ~ 17:20","title":"Topology Optimization for Linear Elastic Structures by Filtered Wasserstein Gradient Flows","authors":"Fumiya Okazaki* (Institute of Science Tokyo), Takayuki Yamada (The University of Tokyo)"},{"code":"MB1-6","paper":"P00058","time":"17:20 ~ 17:40","title":"Level-Set-Based Topology Optimization for Simultaneous Design of Layout and Structure in Link Mechanisms Using Micropolar Elasticity Model","authors":"Xuao Li, Yurika Sayo, and Takayuki Yamada* (The University of Tokyo)"},{"code":"MB2-1","paper":"P00308","time":"15:40 ~ 16:00","title":"Topology Optimization Design of Bi-Stable Mechanical Metamaterials Using Gradient-Free Algorithms","authors":"Xiaopeng Zhang” and Kuan Liang (Dalian University of Technology)"},{"code":"MB2-2","paper":"P00314","time":"16:00 ~ 16:20","title":"Accelerated Structure Topology Optimization Driven by Deep Learning","authors":"Jun Yan* and Mengfang Zhou (Dalian University of Technology)"},{"code":"MB2-3","paper":"P00006","time":"16:20 ~ 16:40","title":"Multiscale Topology Optimization of Heat Sinks with Spatially-Varying Unit Cell Size","authors":"Yonghwa Ji and Jaewook Lee* (Gwangju Institute of Science and Technology)"},{"code":"MB2-4","paper":"P00015","time":"16:40 ~ 17:00","title":"Concurrent Optimization of Structural Topology and Process Parameters for Thermal Distortion Control in Laser Additive Manufacturing","authors":"Xiaoyu Huang and Mingdong Zhou* (Shanghai Jiao Tong University)"},{"code":"MB2-5","paper":"P00022","time":"17:00 ~ 17:20","title":"Design of Graded Multi-Scale Lattice Structures for Isotropic Stiffness","authors":"Xue Yu, Yuyan Zeng, and Yigiang Wang* (Dalian University of Technology)"},{"code":"MB2-6","paper":"P00025","time":"17:20 ~ 17:40","title":"Linearization of Topology Optimization for Traveling Salesman Problem","authors":"Changyeong Kim and In Gwun Jang* (KAIST)"},{"code":"MB3-1","paper":"P00103","time":"15:40 ~ 16:00","title":"Hybrid Active-Learning Reliability Analysis Integrating Kriging and Neural Network Ensemble","authors":"Sang Geon Park and Ungki Lee* (Korea University)"},{"code":"MB3-2","paper":"P00140","time":"16:00 ~ 16:20","title":"Hamiltonian Support Vector Machine: A Novel Active Learning Method with Deep Local Search for Reliability Analysis","authors":"Dogeon Oh* and Dongjin Lee (Hanyang University)"},{"code":"MB3-3","paper":"P00146","time":"16:20 ~ 16:40","title":"Surrogate-Driven Reliability-Based Design Optimization of a Suspension Lower Control Arm Using MBD-FEM Co-Simulation","authors":"Taewook Kwon and Dongjin Lee* (Hanyang University)"},{"code":"MB3-4","paper":"P00178","time":"16:40 ~ 17:00","title":"A Nested Geometric Model-Driven Stochastic Isogeometric Analysis Framework for Complex Thin-Walled Structures","authors":"Peng Hao, Lingzhi Jin, and Hao Yang (Dalian University of Technology)"},{"code":"MB3-5","paper":"P00188","time":"17:00 ~ 17:20","title":"Spatiotemporal-Dependent Reliability-Based Design Optimization of Wind Turbines Using Gradient-Enhanced Deep Reinforcement Learning","authors":"Jianhao Fang, Weifei Hu*, and Tongzhou Zhang (Zhejiang University), Ikjin Lee (KAIST), Jianrong Tan (Zhejiang University)"},{"code":"MB3-6","paper":"P00257","time":"17:20 ~ 17:40","title":"Reliability-Based Design Optimization via Meta-Active Learning: A Model State- Aware Intelligent Sampling Strategy Selection","authors":"Taeyeon Park and Gunwoo Noh* (Korea University)"},{"code":"MB4-1","paper":"P00297","time":"15:40 ~ 16:00","title":"Sophistication of Radial Basis Function Networks for Efficient Design Optimization","authors":"Wataru Yamazaki* (Nagaoka University of Technology)"},{"code":"MB4-2","paper":"P00009","time":"16:00 ~ 16:20","title":"Multi-Objective Optimal Design of Double Layer Microperforated Panel Absorber in a Random Incidence Field Using Sequential Approximate Optimization","authors":"Satoshi Tabuchi* (Kobe Steel, LTD. / Kanazawa University), Satoshi Kitayama (Kanazawa University)"},{"code":"MB4-3","paper":"P00030","time":"16:20 ~ 16:40","title":"Pole-Slot Combination Optimization of an IPM Motor Using a Surrogate-Based Mixed-Variable Optimization Algorithm","authors":"Tatsuya Asanuma* (The University of Tokyo / JSOL Corporation), Yoshihiro Kanno (The University of Tokyo)"},{"code":"MB4-4","paper":"P00044","time":"16:40 ~ 17:00","title":"Monolithic Stiffness-Configurable Spatial Compliant Mechanism via Mechanical Bistable Switches","authors":"Intaek Kwon and Dongil Shin* (Pohang University of Science and Technology)"},{"code":"MB4-5","paper":"P00052","time":"17:00 ~ 17:20","title":"Comparative Study of Surrogate-Based and Gradient-Based Optimization for Speakerphone Vibroacoustic Design","authors":"Taegyun Noh (Gyeongsang National University), Peter Risby Andersen (GN Audio A/S & Jabra), Seongyeol Goo (Korea Atomic Energy Research Institute), Junghwan Kook* (Gyeongsang National University)"},{"code":"MB4-6","paper":"P00116","time":"17:20 ~ 17:40","title":"Bayesian Optimization for Stable and Efficient Path Planning in Rough Terrain","authors":"Hyeon Been Seo, Sungkyu Choi, Sang Geon Park, and Ungki Lee* (Korea University)"},{"code":"MB5-1","paper":"P00034","time":"15:40 ~ 16:00","title":"Concurrent Aerodynamic and Structural Optimization of Rotor Blades Considering Planform, Airfoil, and Internal Structure Seongjoong Park, Younghyo Kim, Taemin Jeong, Sejung Yoo, and Kwanjung Yee*","authors":"(Seoul National University)"},{"code":"MB5-2","paper":"P00041","time":"16:00 ~ 16:20","title":"Fluid-Structure Interaction and Parameter Optimization of Passively Deformable Skins on Airfoils at Low Reynolds Numbers","authors":"Zhao Yang* and Shuxin Zhang (Xidian University)"},{"code":"MB5-3","paper":"P00059","time":"16:20 ~ 16:40","title":"Validation of Efficient Optimization Method for Laminate Configuration in Gaussian Process Approximation of OHT Strength in Lamination Parameter Space","authors":"Nozomu Kogiso* and Yu Iwaki (Osaka Metropolitan University)"},{"code":"MB5-4","paper":"P00061","time":"16:40 ~ 17:00","title":"Design and Performance Evaluation of an Aerial Manipulator for GPR-Based Internal Inspection of Railway Bridges","authors":"Gun-Mo Lee (University of Science and Technology), Hyuk-Jin Yoon*, Dae-Hyun Kim, and Chanho Park (Korea Railroad Research Institute)"},{"code":"MB5-5","paper":"P00073","time":"17:00 ~ 17:20","title":"Accuracy Optimization of A Large Deployable SAR Antenna Considering Multiple Errors","authors":"(17:00 ~ 17:20) Yiming Zhou, Jianzhong Ding*, and Chunjie Wang (Beihang University)"},{"code":"MB5-6","paper":"P00079","time":"17:20 ~ 17:40","title":"Multi-Objective Optimization for Water-Exit Stabilization of Asymmetric Trans-Medium Vehicles","authors":"Ziyu Wang, Teng Long, Baoshou Zhang*, Haoda Li, Jiarong Cui, and Xin Liu (Beijing Institute of Technology)"},{"code":"MB6-1","paper":"P00263","time":"15:40 ~ 16:00","title":"End-to-End Generative Framework for the Inverse Design of Multi-Functional Elastic Metasurfaces","authors":"Taehun Kim, Donghyu Lee, Juhwan Han, and Sayhee Kim (Seoul National University), Soo-Ho Jo (Dongguk University), Byeng Dong Youn* (Seoul National University)"},{"code":"MB6-2","paper":"P00267","time":"16:00 ~ 16:20","title":"Feasibility-Aware Physics-Conditioned Generative Design of Metasurface Silencers in HVAC of Electric Vehicle","authors":"Taehyeok Kim and Jongsoo Lee* (Yonsei University)"},{"code":"MB6-3","paper":"P00298","time":"16:20 ~ 16:40","title":"Topology-Change-Tolerant 2D IPM Motor Shape Generation via Conditional Diffusion","authors":"Mizuki Kaneko*, Shun Ogawa, and Katsuyuki Suzuki (The University of Tokyo)"},{"code":"MB6-4","paper":"P00242","time":"16:40 ~ 17:00","title":"LLM-Guided Adaptive Penalty Parameter Updates for Analytical Target Cascading","authors":"Jangseop Park and Namwoo Kang* (KAIST)"},{"code":"MB6-5","paper":"P00069","time":"17:00 ~ 17:20","title":"A Multi-Agent Framework Using LLM for Automated Topology Optimization","authors":"Jihwan Yoon*, Namyoon Kim, and Jeonghoon Yoo (Yonsei University)"},{"code":"MB6-6","paper":"P00105","time":"17:20 ~ 17:40","title":"The Megatrend of Engineering Design Evolution: From Experiments to Agentic AI","authors":"Dong-Hoon Choi* and Byung-Lyul Choi (PIDOTECH)"},{"code":"TA1-2","paper":"P00087","time":"09:00 ~ 09:20","title":"Adaptive Feature-Driven Topology Optimization Method via Sequential Integer Programming","authors":"Yichen Hou, Shouyu Cai*, Qiangqian Zhang, and Minghao Jia (Zhengzhou University)"},{"code":"TA1-3","paper":"P00088","time":"09:20 ~ 09:40","title":"Design of Planar Link Mechanisms with Partially Rigid Joints Using Linear Programming for Deployable Structure","authors":"Yukihiko Suyama* and Makoto Yamakawa (Tokyo University of Science), Kazuma Goto (Arup), Makoto Ohsaki (Kyoto University)"},{"code":"TA1-4","paper":"P00092","time":"09:40 ~ 10:00","title":"Multi-Material Topology Optimization with Isotropic Materials and Block-Wise Anisotropic Orientations","authors":"Won Seok Song and Seungjae Min* (Hanyang University)"},{"code":"TA1-5","paper":"P00097","time":"10:00 ~ 10:20","title":"Multi-Material Topology Optimization of IPMSM with Adhesive Interface Modeling Between the Permanent Magnet and Iron Core","authors":"Jeongho Kim and Seungjae Min* (Hanyang University)"},{"code":"TA2-1","paper":"P00303","time":"08:40 ~ 09:00","title":"Flow-Priority Optimization of Variable-Primitive-TPMS Lattice Heat Exchanger Based on Macroscopic Analysis","authors":"Kazutaka Yanagihara (Waseda University, AGC Inc.), Jun Iwasaki, Kiyono Saso, and Akihiro Takezawa* (Waseda University)"},{"code":"TA2-3","paper":"P00042","time":"09:20 ~ 09:40","title":"Failure-Safe Topology Optimization for Additively Manufactured Anisotropic Composite Structures","authors":"Hyoung Jun Lim* (Gyeongsang National University), Seyyed Ali Latifi Rostami (Ayatollah Boroujerdi University)"},{"code":"TA2-4","paper":"P00051","time":"09:40 ~ 10:00","title":"Global Optimality in the Linearized Loopwise Route Representation-Based Topology Optimization","authors":"Sanghoon Park and In Gwun Jang” (KAIST)"},{"code":"TA2-5","paper":"P00057","time":"10:00 ~ 10:20","title":"Topology Optimization of Layer-Repeated Building Isolators Using Viscoelastic Material for Damping Under Cyclic Loading","authors":"Vo Trong Nam* (Yokohama National University), Shun Ogawa and Katsuyuki Suzuki (The University of Tokyo), Yasumi Kawamura (Yokohama National University)"},{"code":"TA3-1","paper":"P00233","time":"08:40 ~ 09:00","title":"Optimal Design of Fast and Robust Energy Transfer Based on the Topological Pumping Mechanism","authors":"Xianggui Ding and Zongliang Du* (Dalian University of Technology)"},{"code":"TA3-2","paper":"P00287","time":"09:00 ~ 09:20","title":"Optimal Design of Lattice Sandwich Panels Considering Geometric Imperfections Induced by Additive Manufacturing","authors":"Yuta Goto and Kuniharu Ushijima* (Tokyo University of Science)"},{"code":"TA3-3","paper":"P00011","time":"09:20 ~ 09:40","title":"Modal Sensitivity Based Model Updating for Additively Manufactured Lattice Core Sandwich Panels","authors":"Yanming Zhang*, Quntao Shangguan, Chunjie Wang, and Junpeng Zhao (Beihang University)"},{"code":"TA3-4","paper":"P00159","time":"09:40 ~ 10:00","title":"An Adaptive Similarity Calibration Method for Parameter Inversion and Model Updating","authors":"Shaojun Feng*, Hao Liu, and Peng Hao (Dalian University of Technology)"},{"code":"TA3-5","paper":"P00162","time":"10:00 ~ 10:20","title":"Nonparametric Model Calibration for Disentangling Aleatory and Epistemic Uncertainties","authors":"Chang jun Lee (KAIST), Yongsu Jung (Hongik University), Ikjin Lee* (KAIST)"},{"code":"TA4-1","paper":"P00126","time":"08:40 ~ 09:00","title":"Adaptive Boundary-Reinforced Sampling for Constrained Weight Optimization of HRSG Systems Minji Kim, Yoojeong Noh*, Sangmin Kim, and Man Yeong Ha (Pusan National","authors":"University), Dong Kil Kim and Hyun Gee Kim (BHI Co., Ltd., R&D Center)"},{"code":"TA4-2","paper":"P00138","time":"09:00 ~ 09:20","title":"Hull Form Optimization Method Using an Uncertainty-Based, Automatically Updated Surrogate Model","authors":"Seung-Jun Oh, Myung-Il Roh*, Jin-Hyeok Kim, and Do-Hyeok Ahn (Seoul National University)"},{"code":"TA4-3","paper":"P00210","time":"09:20 ~ 09:40","title":"A Physics-Informed Multi-Fidelity Optimization Framework for Constrained Aerodynamic Optimization of High-Speed Elevator","authors":"Ci He*, Haiquan Wang, and Jin Sun (Yangzhou University), Kazuhiro Izui (Kyoto University), Zili Wang, Weifei Hu, and Shuyou Zhang (Zhejiang University)"},{"code":"TA4-4","paper":"P00255","time":"09:40 ~ 10:00","title":"Optimizing Thermal Uniformity in a Cylindrical Battery System","authors":"Jun Hur and Chang-Wan Kim* (Konkuk University)"},{"code":"TA4-5","paper":"P00281","time":"10:00 ~ 10:20","title":"Sequential Sampling Strategy for Non-Hierarchical Multi-Fidelity Modeling Considering Data Synergies","authors":"Jaeyoung Jeong and Mingyu Lee (KAIST), Yongsu Jung (Hongik University), Ungki Lee (Korea University), Ikjin Lee* (KAIST)"},{"code":"TA5-1","paper":"P00089","time":"08:40 ~ 09:00","title":"Surrogate-Assisted Aerodynamic Layout Optimization for A Two-Stage Piggyback Suborbital Boost Stage Vehicle","authors":"Xinhui Tai, Renhe Shi*, Yao Zhang, and Yixing Song (Beijing Institute of Technology)"},{"code":"TA5-2","paper":"P00094","time":"09:00 ~ 09:20","title":"Multi-Material Topology Optimization of IPMSMs Considering Control Strategy and Coupled Sensitivity Using Frozen Permeability Analysis","authors":"Haram Park, Won Seok Song, and Seungjae Min* (Hanyang University)"},{"code":"TA5-3","paper":"P00104","time":"09:20 ~ 09:40","title":"~=Improved Joint Identification Using an Enhanced FRF Comparison Metric","authors":"Dooho Lee* (Dongeui University)"},{"code":"TA5-4","paper":"P00128","time":"09:40 ~ 10:00","title":"A Simulation Method for the Coastal Patrol Mission of Multiple Unmanned Surface Vehicles","authors":"Gyeong-Hyeon Kang, Myung-Il Roh*, and In-Chang Yeo (Seoul National University)"},{"code":"TA5-5","paper":"P00134","time":"10:00 ~ 10:20","title":"~~ Integrated Aerodynamic, Structural Optimization Methodology Incorporating Internal Layout for Aircraft Fuselage Design","authors":"Seonghyun Jeong, Jeonghwan Kim, and Kwanjung Yee* (Seoul National University)"},{"code":"TA6-1","paper":"P00115","time":"08:40 ~ 09:00","title":"Topology Optimization via a Self-Refining LLM-Based Multi-Agent Framework","authors":"Hyunjee Park and Hayoung Chung* (Ulsan National Institute of Science and Technology)"},{"code":"TA6-2","paper":"P00144","time":"09:00 ~ 09:20","title":"Autonomous Prognostic Health Monitoring for a Combustion System via LLM- Generated Accident Scenarios","authors":"Dogeon Oh, Youngjae Jeon, Hyunjung Woo, and Dongjin Lee* (Hanyang University)"},{"code":"TA6-3","paper":"P00160","time":"09:20 ~ 09:40","title":"A Generative AI Framework for Design Optimization of Wind Turbine Airfoils Considering Dynamic Stall","authors":"Weifei Hu*, Jiquan Yan, Lixin Fan, and Wangde Zhang (Zhejiang University)"},{"code":"TA6-4","paper":"P00209","time":"09:40 ~ 10:00","title":"Autonomous Structural Design Agent Capable of Extending Topology Optimization Libraries","authors":"Shun Ogawa’ and Katsuyuki Suzuki (The University of Tokyo)"},{"code":"TA6-5","paper":"P00222","time":"10:00 ~ 10:20","title":"Agentic AI-Based Ultrasonic Non-Destructive Testing Systems","authors":"Nauman Munir, Seokgyu Han, and Hyunseok Oh* (Gwangju Institute of Science and Technology)"},{"code":"TB1-1","paper":"P00102","time":"10:40 ~ 11:00","title":"A Numerical Framework for Two-Body-Based Topology Optimization Using the Third Medium Method","authors":"Siyue Chang”, Koji Nishiguchi, and Junji Kato (Nagoya University)"},{"code":"TB1-2","paper":"P00110","time":"11:00 ~ 11:20","title":"Improved Two-Stage Feature-Driven Optimization via Ground Structure Method","authors":"Minghao Jia, Shouyu Cai*, Qiangian Zhang, and Yichen Hou (Zhengzhou University)"},{"code":"TB1-3","paper":"P00114","time":"11:20 ~ 11:40","title":"Topology Optimization of Heat Dissipation Structures via Adaptive Feature-Driven Method with Intrinsic Length-Scale Control","authors":"Qiangian Zhang, Shouyu Cai*, Yuxin Sun, and Ke Wang (Zhengzhou University)"},{"code":"TB1-4","paper":"P00119","time":"11:40 ~ 12:00","title":"Homogenization-Driven Microstructure Compatibility for Multiscale Topology Optimization Tielin Dai, Tianjie Chen, Qingyu Xu, Xiao-Ming Fu, and Ligang Liu (University of Science and Technology of China), Wenming Wu (Hefei University of Technology), Xiaoya Zhai* (University of Science and Technology of China) TBi-5 P00121 Thermo-Induced Strain Fields Design via Multimaterial Topology Optimization Tianyu Li, Xiaoya Zhai*, Xiaohao Sun, and Luxia Yu (University of Science and","authors":"Technology of China), Liuchao Jin (The Chinese University of Hong Kong), Lili Wang (University of Science and Technology of China), Wei-Hsin Liao (The Chinese University of Hong Kong), Ligang Liu and Xiao-Ming Fu (University of Science and Technology of China)"},{"code":"TB2-1","paper":"P00060","time":"10:40 ~ 11:00","title":"A Computational Framework for Mechanical Logic","authors":"Ivan Felipe Velasco Medina and Takayuki Yamada* (The University of Tokyo)"},{"code":"TB2-2","paper":"P00067","time":"11:00 ~ 11:20","title":"Preference-Aware Topology Optimization as a Selection Problem over Feasible Designs","authors":"Ahyun Shin and Ungki Lee* (Korea University)"},{"code":"TB2-3","paper":"P00071","time":"11:20 ~ 11:40","title":"Topology Optimization of 3D Functionally Graded Composite Structures for Stiffness and Natural Frequency Maximization","authors":"Seungchan Lee*, Hakyong Jang, and Jeonghoon Yoo (Yonsei University)"},{"code":"TB2-4","paper":"P00084","time":"11:40 ~ 12:00","title":"Topology Optimization-Based Path Planning for Complex Maze Networks","authors":"Jeonghun Kim and In Gwun Jang* (KAIST)"},{"code":"TB2-5","paper":"P00090","time":"12:00 ~ 12:20","title":"Topology Optimization Based on Load-Displacement Curve Control for Dual- Function Design","authors":"Soma Tojo* (Nagoya University), Toshitaka Sugimoto and Shinji Azetsu (Honda R&D Co., Ltd.), Koji Nishiguchi and Junji Kato (Nagoya University)"},{"code":"TB3-1","paper":"P00017","time":"10:40 ~ 11:00","title":"iPDI-PINNs: A Hybrid Neural Network Architecture with Independent Point Density Interpolation for Hyperelastic Topology Optimization","authors":"Qingyuan Zhang and Zhan Kang* (Dalian University of Technology)"},{"code":"TB3-2","paper":"P00026","time":"11:00 ~ 11:20","title":"Transformer-Based Generative Model for Optimization of 3D Steel Building Frames","authors":"Kotaro Takenaka* and Makoto Ohsaki (Kyoto University)"},{"code":"TB3-3","paper":"P00027","time":"11:20 ~ 11:40","title":"Towards Engineering Intelligence: Foundations of Engineering-Centric AI for Analysis and Optimization","authors":"Sooyoung Lee* (Chung-Ang University)"},{"code":"TB3-4","paper":"P00033","time":"11:40 ~ 12:00","title":"Cost-Effective Autonomous Experimental Design for Battery State-of-Health Prediction Using a Need Score Jiheon Kang, Gyeong Ryun Gwon, Seungyun Lee, and Minjae Kim (Seoul National","authors":"University), Guesuk Lee (Korea Electronics Technology Institute), Byeng Dong Youn* (Seoul National University, onepredict)"},{"code":"TB3-5","paper":"P00063","time":"12:00 ~ 12:20","title":"Electromagnetic Field Prediction for Radial Force Estimation in Electric Motors Using Deep Operator Network Jeonguk Myeong and Seokwoo Hong (Gwangju Institute of Science and","authors":"Technology), Dongjin Kim (Korea Atomic Energy Research Institute), Jaewook Lee* (Gwangju Institute of Science and Technology)"},{"code":"TB4-1","paper":"P00318","time":"10:40 ~ 11:00","title":"Surrogate-Based Multi-Objective Optimization for Fracture Assessment of Spent Nuclear Fuel Cladding Considering Hydride Morphology Variability","authors":"Guhyeon Jeong, Seyeon Kim, and Sanghoon Lee* (Keimyung University)"},{"code":"TB4-2","paper":"P00125","time":"11:00 ~ 11:20","title":"p-Adaptive Port Reduction for Topology Optimization Using Finite Cell Method with Static Condensation","authors":"Youngjin Ju and Seungjae Min* (Hanyang University)"},{"code":"TB4-3","paper":"P00161","time":"11:20 ~ 11:40","title":"Hybrid Modal Ensemble-Reduced Order Modeling (HyME-ROM): A Robust Meta-Learning Framework for Non-Intrusive ROM","authors":"Ikhyun Ryu and Kyu-Byung Park* (PIDOTECH)"},{"code":"TB4-4","paper":"P00189","time":"11:40 ~ 12:00","title":"A Novel Multi-Fidelity Reduced-Order Surrogate Model for Two-Way Coupled Aeroelastic Analysis of Wind Turbine Blades","authors":"Yufei Jiang, Weifei Hu*, Jianhao Fang, Jiquan Yan, and Tongzhou Zhang (Zhejiang University)"},{"code":"TB4-5","paper":"P00196","time":"12:00 ~ 12:20","title":"Geometric Parameterization for Reduced Basis Analysis of Torispherical Pressure Vessels","authors":"Heesung Lee and Kyunghoon Lee* (Pusan National University)"},{"code":"TB5-1","paper":"P00153","time":"10:40 ~ 11:00","title":"Optimal Design of an Acoustic Meta-Silencer Based on Generative Design Technique","authors":"Jin Woo Lee* (Ajou University), Jaeho Cho (University of Southampton)"},{"code":"TB5-2","paper":"P00166","time":"11:00 ~ 11:20","title":"Design Optimisation of a Wing Considering Uncertainties in its Conceptual Design Stage","authors":"Inyoung Lee (Seoul National University), Daejin Lim (Korea Aerospace Research Institute), Kwanjung Yee* (Seoul National University)"},{"code":"TB5-3","paper":"P00236","time":"11:20 ~ 11:40","title":"Operational Feasibility and Network Optimization of Hydrogen-Powered Regional Aircraft in Central Asia","authors":"Maxim Tyan* and Wagd Ajeeb (New Uzbekistan University)"},{"code":"TB5-4","paper":"P00270","time":"11:40 ~ 12:00","title":"Flexibility-Aware Assessment and Optimization of System Architectural Decision for Large Space Systems Considering On-Orbit Servicing","authors":"Jaewoo Kim* (KAIST), Jimin Choi (University of Michigan), Jaemyung Ahn (KAIST)"},{"code":"TB5-5","paper":"P00324","time":"12:00 ~ 12:20","title":"Deep Reinforcement Learning for Actuator Placement Optimization in Vibration Control of Large Space Truss Structures Using Direct Controllability Objective","authors":"Xiaoqing Dong, Shenyan Chen*, Huiyun Pan, and Weipeng Li (Beihang University)"},{"code":"TB6-1","paper":"P00036","time":"10:40 ~ 11:00","title":"A Structured Method for Automating Multiphysics Simulations Using Large Language Models","authors":"Haesoo Yoo and Wonbin Song (Seoul National University), Guesuk Lee (Korea Electronics Technology Institute), Byeng Dong Youn* (Seoul National University)"},{"code":"TB6-2","paper":"P00243","time":"11:00 ~ 11:20","title":"An LLM-Based Multi-Agent Framework for Automated Structural Optimization Workflows","authors":"Dongjun Han, Mingyu Lee, and Ikjin Lee* (KAIST)"},{"code":"TB6-3","paper":"P00245","time":"11:20 ~ 11:40","title":"Talk2Print: Real-Time Human-AI Collaborative Optimization in Additive Manufacturing via Large Language Models","authors":"Seongyoon Jeon and Namhun Kim* (Ulsan National Institute of Science and Technology)"},{"code":"TB6-4","paper":"P00288","time":"11:40 ~ 12:00","title":"From Idea to Engineering-Aware Product Design: A Case Study of Toy Car Development Using Generative AI","authors":"Leekyo Jeong, Soyoung Yoo, Jiyong Kim, Wonjae Jeong, and Namwoo Kang* (KAIST)"},{"code":"TB6-5","paper":"P00323","time":"12:00 ~ 12:20","title":"Optimization Design for Stiffened Cylindrical Thin-Walled Structures Under Nonlinear Structural Response Constraints","authors":"Jingcheng Tan, Hai Huang*, and Shenyan Chen (Beihang University)"},{"code":"TC1-2","paper":"P00145","time":"16:20 ~ 16:40","title":"Concurrent Multi-Material Multi-Scale Variable Stiffness Design Optimization of Fiber-Reinforced Composites Considering Tsai-Wu Failure Constraints","authors":"Yi Liu and Zunyi Duan* (Northwestern Polytechnical University), Jun Yan (Dalian University of Technology), Jihong Zhu (Northwestern Polytechnical University)"},{"code":"TC1-3","paper":"P00147","time":"16:40 ~ 17:00","title":"Transient Topology Optimization of Self-Oscillating BZ Gels for Finite Strain Actuation","authors":"Naoyuki Ishida* and Jike Han (Kyoto University), Shunsuke Kobayashi (The University of Osaka), Kazuhiro Izui and Shinji Nishiwaki (Kyoto University)"},{"code":"TC1-4","paper":"P00154","time":"17:00 ~ 17:20","title":"Topology Optimization for Nonlinear Buckling Considering Elastic Limit Under Finite Deformation","authors":"Kousei Eda* (Nagoya University), Hisao Uozumi (Honda R&D Co., Ltd.), Koji Nishiguchi and Junji Kato (Nagoya University)"},{"code":"TC1-5","paper":"P00157","time":"17:20 ~ 17:40","title":"Topology Optimization for Link Mechanism Synthesis Using a Multi-Layer Micropolar Elasticity Model","authors":"Yurika Sayo and Takayuki Yamada* (The University of Tokyo)"},{"code":"TC2-1","paper":"P00095","time":"16:00 ~ 16:20","title":"A Multi-Material Design Framework for Tailorable Microstructures Under Magnetic-Thermal Performance Trade-Offs","authors":"Doyun Jeong and Seungjae Min* (Hanyang University)"},{"code":"TC2-2","paper":"P00100","time":"16:20 ~ 16:40","title":"Multi-Scale and Multi-Objective Topology Optimization of Cold Plates","authors":"Hyunseung Ryu* and Jeonghoon Yoo (Yonsei university)"},{"code":"TC2-3","paper":"P00101","time":"16:40 ~ 17:00","title":"A Model for Visibility Evaluation Based on Ray-Tracing Algorithm in Structural Design","authors":"Xiao Huang, Kaiwen Guan, and Takayuki Yamada* (The University of Tokyo)"},{"code":"TC2-4","paper":"P00120","time":"17:00 ~ 17:20","title":"Stress- and Fatigue-Oriented Magneto-Structural Topology Optimization for High- Durability Electromagnetic Actuators","authors":"Ahmad Ramadoni and Jaewook Lee* (Gwangju Institute of Science and Technology)"},{"code":"TC2-5","paper":"P00230","time":"17:20 ~ 17:40","title":"Topology-Parameter Concurrent Optimization Method for Impact Resistance of Lattice-Filled Structures Based on Equivalent Analysis","authors":"Chenguang Zhang”* and Jun Yan (Dalian University of Technology)"},{"code":"TC3-1","paper":"P00077","time":"16:00 ~ 16:20","title":"Machine Learning-Based Optimization Design of Grooved and Pleated Flexible Robotic Arms","authors":"Yilin Chen* and Weisheng Zhang (Dalian University of Technology)"},{"code":"TC3-2","paper":"P00078","time":"16:20 ~ 16:40","title":"A Machine Learning-Assisted Topology Optimization Method for 3D Bio-Inspired Structural Design","authors":"Mi Li* and Weisheng Zhang (Dalian University of Technology)"},{"code":"TC3-3","paper":"P00081","time":"16:40 ~ 17:00","title":"An Efficient Cross-Attention Method for Large-Scale 3D Flow Field Prediction","authors":"Sanghyeon Kim, Sunwoong Yang, Sanghyuk Kim, Jinseong Han, and Namwoo Kang* (KAIST)"},{"code":"TC3-4","paper":"P00082","time":"17:00 ~ 17:20","title":"Multi-Scale Domain Adaptation for Cross-Domain Structural Response Prediction in Offshore Platforms","authors":"Xin Su*, Qi Zhang, Yi Huang, Mengyao Ren, and Zhongyuan Feng (Dalian University of Technology)"},{"code":"TC3-5","paper":"P00083","time":"17:20 ~ 17:40","title":"Optimizing State Representation for DRL-Based Airfoil Active Flow Control","authors":"Zihao Zhang, Baoshou Zhang*, and Teng Long (Beijing Institute of Technology)"},{"code":"TC4-1","paper":"P00221","time":"16:00 ~ 16:20","title":"A Novel Truss FEM-Cluster Based Analysis Method for Predicting Effective Elastoplastic Properties of Lattice Materials","authors":"Hongyuan Liu, Yinghao Nie, and Jun Yan* (Dalian University of Technology)"},{"code":"TC4-2","paper":"P00223","time":"16:20 ~ 16:40","title":"Reduced Basis Approaches to Rapid Yet Accurate Homogenization of Elastic Properties in Periodic Unidirectional Composites","authors":"Quang Pham-Xuan and Kyunghoon Lee* (Pusan National University)"},{"code":"TC4-3","paper":"P00313","time":"16:40 ~ 17:00","title":"A Data-Driven Concurrent Multiscale FE-FCA Method for the Elastoplastic Nonlinear Mechanical Response Analysis and Topology Optimization of Large-Scale Composite Structures","authors":"Yinghao Nie*, Zhihui Liu, Jun Yan, and Gengdong Cheng (Dalian University of Technology)"},{"code":"TC4-4","paper":"P00123","time":"17:00 ~ 17:20","title":"Dynamic Weighting and Pareto Frontier Exploration in Level Set Based Topology Optimization","authors":"Jan Oellerich* and Takayuki Yamada (The University of Tokyo)"},{"code":"TC4-5","paper":"P00169","time":"17:20 ~ 17:40","title":"Engineering Starts with Words (Trade-Off of Words Considering Nonlinearity)","authors":"Yan Hu and Masao Arakawa* (Waseda University), Nobuhisa Katsumata (Kagawa University)"},{"code":"TC5-1","paper":"P00282","time":"16:00 ~ 16:20","title":"An Optimization Method for Hybrid Triply Periodic Minimal Surfaces (TPMS) Liquid-Cooled Heat Sinks with Smooth Transitions","authors":"Boyuan Fan and Shutian Liu* (Dalian University of Technology)"},{"code":"TC5-2","paper":"P00286","time":"16:20 ~ 16:40","title":"Temperature Monitoring of Axle Bearings in Railway Vehicles for Ensuring the Running Safety","authors":"Jeongguk Kim* (Korea Railroad Research Institute)"},{"code":"TC5-3","paper":"P00290","time":"16:40 ~ 17:00","title":"Learning Joint Spring Stiffness for Beam-Based Vehicle Body Models Using Graph Neural Networks","authors":"Da-Eun Jeong and Gang-Won Jang* (Sejong University)"},{"code":"TC5-4","paper":"P00293","time":"17:00 ~ 17:20","title":"Dual-Mission Bi-Disciplinary Optimization of Stage and Trajectory for a Reusable Launch Vehicle","authors":"Wongi Kim and Jaemyung Ahn* (KAIST)"},{"code":"TC5-5","paper":"P00304","time":"17:20 ~ 17:40","title":"Design and Validation of Fatigue-Resistant Compliant Morphing Mechanisms via Topology Optimization and Additive Manufacturing","authors":"Wongon Kim (Konkuk University), Jin Young Yun (Hyundai Motor Company), Gun Jin Yun* (Seoul National University)"},{"code":"TC6-1","paper":"P00048","time":"16:00 ~ 16:20","title":"Physics-Informed Diffusion Models with Posterior for Accelerating Acoustic Design Optimization","authors":"Jaewan Lee, Jungin Kim, and Junghwan Kook* (Gyeongsang National University)"},{"code":"TC6-2","paper":"P00054","time":"16:20 ~ 16:40","title":"A Convolutional Neural Network with Attention Mechanism for the Prediction of Acoustic Pressure Field in Coupled Cavity-Beam Systems","authors":"Sehyun Lee and Heonjun Yoon* (Soongsil University)"},{"code":"TC6-3","paper":"P00068","time":"16:40 ~ 17:00","title":"A Sparse Regression Method for Multiscale Shape Functions Based on Machine Learning: AI-Enhanced Topology Optimization for Extremely Large-Scale Problems","authors":"Haocheng Xi* and Weisheng Zhang (Dalian University of Technology)"},{"code":"TC6-4","paper":"P00075","time":"17:00 ~ 17:20","title":"Evaluating Speedup and Applicability Limits of Zero-Shot Pretrained Neural Operators for Topology Optimization","authors":"Takahiro Akimoto* and Takayuki Yamada (The University of Tokyo)"},{"code":"TC6-5","paper":"P00171","time":"17:20 ~ 17:40","title":"Comparison of Physics-Informed Neural Networks and FEMU in Heterogeneous Inverse Analysis Frameworks","authors":"Chanho Kim and Jaewook Lee* (Gwangju Institute of Science and Technology)"},{"code":"WA1-1","paper":"P00163","time":"08:40 ~ 09:00","title":"Simultaneous Topology and Orientation Optimization for Transversely Isotropic and Orthotropic Materials Using Tensor Field Parameterization Tokiha Yamaguchi*, Naoyuki Ishida, Tsuguo Kondoh, Kozo Furuta, Kazuhiro Izui, and","authors":"Shinji Nishiwaki (Kyoto University)"},{"code":"WA1-2","paper":"P00174","time":"09:00 ~ 09:20","title":"A Particle-Added Element Connectivity Parametrization (P-ECP) Framework for Topology Optimization with Contact","authors":"Young Hun Choi and Gil Ho Yoon* (Hanyang University)"},{"code":"WA1-3","paper":"P00179","time":"09:20 ~ 09:40","title":"Topology Optimization for Conflicting Energy Dissipation Requirements in Viscoelastic Composites","authors":"Rin Matsuo*, Koji Nishiguchi, and Junji Kato (Nagoya University)"},{"code":"WA1-4","paper":"P00180","time":"09:40 ~ 10:00","title":"Topology Optimization of 3D Conformal Lattice Structures via IGA and VCUT","authors":"Yang Xiao, Shouyu Cai”, Jie Li, and Ke Wang (Zhengzhou University)"},{"code":"WA1-5","paper":"P00183","time":"10:00 ~ 10:20","title":"Topology Optimization for Fluid Machinery Design Ensuring the Target Operating Point","authors":"Takamitsu_Sasaki*, Tsuguo Kondoh, and Kozo Furuta (Kyoto University), Kisho Hatakenaka (Mitsubishi Electric Corporation), Kazuhiro Izui and Shinji Nishiwaki (Kyoto University)"},{"code":"WA2-1","paper":"P00132","time":"08:40 ~ 09:00","title":"A Comprehensive Design Framework for Synchronous Reluctance Motors Using Sequential Topology and Shape Optimization","authors":"Hoonkoo Choi (Gwangju Institute of Science and Technology), Taehoon Jung (Samsung Electronics Co., Ltd.), Jaewook Lee* (Gwangju Institute of Science and Technology)"},{"code":"WA2-2","paper":"P00142","time":"09:00 ~ 09:20","title":"Topology Optimization of Dual Phase Change Materials (Dual-PCM) Heatsinks for Minimizing Temperature Oscillations","authors":"Sheng Pan*, Shinji Nishiwaki, and Kazuhiro Izui (Kyoto University)"},{"code":"WA2-3","paper":"P00152","time":"09:20 ~ 09:40","title":"Development of an Optimal LCO, Storage Tank for On-Board Carbon Capture System:A Space-Efficient Tri-Lobe Type-C Tank Jin-Ho Lee (University of Science and Technology, Korea Research Institute of Ships and Ocean Engineering), Ha-Yeong Kim (Korea Research Institute of Ships and","authors":"Ocean Engineering), Gahyeon Kang (Ewha Womans University), Hyun-Seok Kim* (Korea Research Institute of Ships and Ocean Engineering)"},{"code":"WA2-4","paper":"P00177","time":"09:40 ~ 10:00","title":"Thermally Switchable Transmission Control via Topology Optimization of Phase Change Material (PCM)-Embedded Vibroacoustic Structures","authors":"Hyeonjun Jeong and Jaeyub Hyun* (Pukyong National University)"},{"code":"WA2-5","paper":"P00185","time":"10:00 ~ 10:20","title":"High-Performance Piezoelectric Actuator Design Using Microstructural Optimization","authors":"Sunghoon Lim* and Kazuhiro Izui (Kyoto University), Seungjae Min (Hanyang University), Shinji Nishiwaki (Kyoto University)"},{"code":"WA3-1","paper":"P00096","time":"08:40 ~ 09:00","title":"Physics-Informed Deep Operator Networks with Self-Supervised Material Field Representations for Topology Optimization","authors":"Hyogeun Park and Seungjae Min* (Hanyang University)"},{"code":"WA3-2","paper":"P00108","time":"09:00 ~ 09:20","title":"Multi-Material Topology Optimization for Aesthetically-Diverse Components via Spatially-Guided Style Transfer and Manufacturing Constraints","authors":"Yukun Feng and Takayuki Yamada* (The University of Tokyo)"},{"code":"WA3-3","paper":"P00111","time":"09:20 ~ 09:40","title":"Transfer Learning-Based Acceleration of Multi-Resolution Topology Optimization Using a Hierarchically Enriched Finite Element Representation","authors":"Jiwon Wang, Youngjin Ju, and Seungjae Min* (Hanyang University)"},{"code":"WA3-4","paper":"P00149","time":"09:40 ~ 10:00","title":"Tabular Foundation Model Application for High-Dimensional Metamodeling","authors":"Dong-Keon Kim*, Ikhyun Ryu, Dongheum Ryu, and Yongbin Lee (PIDOTECH)"},{"code":"WA3-5","paper":"P00150","time":"10:00 ~ 10:20","title":"Uncertainty-Aware Sequential Design of Experiments with Dynamic Feature Selection for Data-Efficient System Development","authors":"HanyYi Jang, Yoojeong Noh*, and Young-Jin Kang (Pusan National University), Han Kim, SeongHyeon Yun, and DaHye Yoo (LG Electronics)"},{"code":"WA4-1","paper":"P00012","time":"08:40 ~ 09:00","title":"Truss Optimization Using Simple Differential Evolution","authors":"Vu Truong Vu* (Nguyen Tat Thanh University)"},{"code":"WA4-2","paper":"P00155","time":"09:00 ~ 09:20","title":"Remeshing Free Parameter Optimization: A Transformation Optics Based Efficient Shape Optimization Strategy for Dielectric Metasurfaces","authors":"Qianglong Wang (Chinese Academy of Sciences), Xu Yang (University of Chinese Academy of Sciences), Zhenyu Liu* (Chinese Academy of Sciences)"},{"code":"WA4-3","paper":"P00170","time":"09:20 ~ 09:40","title":"Multi-Objective Optimized Design of Novel Y-Frame Core Sandwich Panels Under Low-Speed Impact Loading","authors":"Chen Wang, Wanxin He*, and Gang Li (Dalian University of Technology)"},{"code":"WA4-4","paper":"P00191","time":"09:40 ~ 10:00","title":"Patch-Independent Subdivision Parameterization for Force-Flow-Driven Stiffener Layout Optimization via Subdivision Nested Models","authors":"Lingzhi Jin, Peng Hao”, and Rui Qian (Dalian University of Technology)"},{"code":"WA4-5","paper":"P00244","time":"10:00 ~ 10:20","title":"Size Optimization of Negative Stiffness Metamaterials for Head Injury Criterion Reduction Using Nonlinear Lumped-Parameter Modeling","authors":"Sinwoo Jeong* and Byungchang Jung (Korea Institute of Machinery & Materials)"},{"code":"WA5-1","paper":"P00311","time":"08:40 ~ 09:00","title":"Introduction of Practical Structural Optimization Applications on Combat Aircraft","authors":"Jungchul Lee*, Seung-woo Jin, Myoung-je Choi, and Yong-yeon Han (Korea Aerospace Industries)"},{"code":"WA5-2","paper":"P00013","time":"09:00 ~ 09:20","title":"Experimental Validation of Layout-Optimized Timber Bridges:Integrating Numerical Modeling and Physical Testing","authors":"Jian Zhang” (Northeastern University), Linwei He, Helen Fairclough, and Matthew Gilbert (The University of Sheffield)"},{"code":"WA5-3","paper":"P00074","time":"09:20 ~ 09:40","title":"Optimal Sensor Placement of Jacket Structures Based on Proper Orthogonal Decomposition Xunan Cai*, Qi Zhang, and Yi Huang (Dalian University of Technology) WAS-4 P00195 Optimization-Oriented Parametric Study on Gap Ratio and Vertical Arrangement in a Gap-Type Damping System","authors":"Tomoki Mitsunaga* and Makoto Yamakawa (Tokyo University of Science)"},{"code":"WA5-5","paper":"P00269","time":"10:00 ~ 10:20","title":"Optimal Design of Beam Diameter and Plate Arrangement in Sound-Absorbing Lattice Structures Using Genetic Algorithm","authors":"Gaku Nagahara, Seiji Miyake, and Kuniharu Ushijima* (Tokyo University of Science)"},{"code":"WA6-1","paper":"P00197","time":"08:40 ~ 09:00","title":"DeepONet Based Prediction of Shear Shape Function for Higher-Order Shear Deformation Theory of Composite Laminated Plates","authors":"Sung Jun Jeon, Seog Young Han, and Gil Ho Yoon* (Hanyang University)"},{"code":"WA6-2","paper":"P00215","time":"09:00 ~ 09:20","title":"Physics-Informed DeepONet for Dispersion Analysis of Phononic Crystals","authors":"(09:00 ~ 09:20) Yeonsu Kim, Minseo Kang, Subin Kim, and Hyoungin Kim (Soongsil University), Taejin Kim (Jeonbuk National University), Heonjun Yoon* (Soongsil University)"},{"code":"WA6-3","paper":"P00235","time":"09:20 ~ 09:40","title":"Physics-Informed Synthetic Data for Early Surge Detection in Centrifugal Compressors","authors":"Sangheon Lee (Pusan National University), Sun-ah Jung, Byungock Kim, and Kyung Ho Sun (Korea Institute of Machinery & Materials), Yun-ho Shin* (Pusan National University)"},{"code":"WA6-4","paper":"P00254","time":"09:40 ~ 10:00","title":"Sparse Operator Learning via Compressed Reconstruction for High-Dimensional Output Field Estimation","authors":"Jisun Kim, Sanghyeon Kim, Joonghyuk Shin, and Namwoo Kang* (KAIST)"},{"code":"WA6-5","paper":"P00261","time":"10:00 ~ 10:20","title":"Physics-Informed Neural Network for Journal Bearing Defect Severity Quantification Using Temperature Sensor Measurements","authors":"Minseok Choi (Gwangju Institute of Science and Technology), Donghyun Lee (Korea Institute of Machinery & Materials), Hyunseok Oh* (Gwangju Institute of Science and Technology)"},{"code":"WB1-1","paper":"P00198","time":"10:40 ~ 11:00","title":"Statistical Topology Optimization for Damage Identification in Laminated Composite Structure","authors":"Jae Yeop Na and Gil Ho Yoon* (Hanyang University)"},{"code":"WB1-2","paper":"P00206","time":"11:00 ~ 11:20","title":"Simultaneous Optimization of Structural Topology and Support Layout to Maximize the Fundamental Frequency of Thin-Walled Structures","authors":"Shun Li, Shouyu Cai*, Wentao Xu, and Hongtao Wei (Zhengzhou University)"},{"code":"WB1-3","paper":"P00207","time":"11:20 ~ 11:40","title":"The Method of Successive Iteration of Analysis and Design for Large-Scale Linear Buckling Topology Optimization","authors":"Zhan Kang* and Yu Cao (Dalian University of Technology)"},{"code":"WB1-4","paper":"P00208","time":"11:40 ~ 12:00","title":"Conformal Lattice Design with Exact Boundary Representation and Seamless Microstructure Integration","authors":"Jie Li, Shouyu Cai*, Yang Xiao, and Ke Wang (Zhengzhou University)"},{"code":"WB1-5","paper":"P00211","time":"12:00 ~ 12:20","title":"Topology Optimization Design Under Stiffness, Strength, and Temperature Constraints over a Wide Range of Temperatures","authors":"Qingxuan Meng* (Hebei University of Engineering), Bin Xu (Northwestern Polytechnical University)"},{"code":"WB2-1","paper":"P00219","time":"10:40 ~ 11:00","title":"Topology Optimization for Removable Partial Dentures","authors":"Risa Tamura*, Shu Sadohara, and Akihiro Takezawa (Waseda University), Naoki Takano (Keio University)"},{"code":"WB2-2","paper":"P00224","time":"11:00 ~ 11:20","title":"A Conceptual Framework for Thermally Invariant Metastructures Using Topology Optimization","authors":"Shoei Ishioka and Takayuki Yamada* (The University of Tokyo)"},{"code":"WB2-3","paper":"P00131","time":"11:20 ~ 11:40","title":"Design Optimization Workflow for Inner-Outer Tank Connecting Support Structures of Type C Liquefied Hydrogen Storage Tank Ha-Yeong Kim, Gun Woo Kim, Jin-Ho Lee, Gahyeon Kang, and Hyun-Seok Kim*","authors":"(Korea Research Institute of Ships and Ocean Engineering)"},{"code":"WB2-4","paper":"P00247","time":"11:40 ~ 12:00","title":"Optimal Design and Applications of Post-Buckled Structures with Tailored Nonlinear Responses over Large Deformations","authors":"Zongliang Du* and Tanghuai Bian (Dalian University of Technology)"},{"code":"WB2-5","paper":"P00251","time":"12:00 ~ 12:20","title":"Topology Optimization of Defective Phononic Crystals for Target Frequency and Defect-Mode Matching","authors":"Soo-Ho Jo* (Dongguk University)"},{"code":"WB3-1","paper":"P00151","time":"10:40 ~ 11:00","title":"Deep Learning driven Design Optimization: A Parameter-Free Approach for 3D CAD Models","authors":"Donggeon Lim, Changhyun Park, and Kyu-Byung Park* (PIDOTECH)"},{"code":"WB3-2","paper":"P00167","time":"11:00 ~ 11:20","title":"Graph Convolutional Autoencoder-Based Reduced Order Modeling for Thermal Analysis of Traction Motors","authors":"Haotian Mo, Weifei Hu*, Jianhao Fang, Chang Jin, and Xinyu Chen (Zhejiang University)"},{"code":"WB3-3","paper":"P00173","time":"11:20 ~ 11:40","title":"Scalable Deep Learning for Dispersion Relation Prediction in 2D Defective Phononic Crystals","authors":"Sayhee Kim, Donghyu Lee, Taehun Kim, and Juhwan Han (Seoul National University), Soo-Ho Jo (Dongguk University), Byeng Dong Youn* (Seoul National University) tt _éie a ganna = = =i"},{"code":"WB3-4","paper":"P00184","time":"11:40 ~ 12:00","title":"Global Field Reconstruction of Dynamical Systems via In-Context Learning","authors":"Xu Liu*, Xiaoya Zhang, Yang Yang, Xiaohu Zheng, Tingsong Jiang, Ning Wang, Xianqi Chen, and Weiwei Liu (Defense Innovation Institute, Chinese Academy of Military Science)"},{"code":"WB3-5","paper":"P00199","time":"12:00 ~ 12:20","title":"Cold-Start Multi-Fidelity Bayesian Optimization","authors":"Juyoung Lee and Ikjin Lee* (KAIST)"},{"code":"WB4-1","paper":"P00268","time":"10:40 ~ 11:00","title":"Cross-Sectional Design Optimization of Internal Members for Electric Vehicle Battery Packs","authors":"Taeseok Kim and Jongwook Lee* (Korea University of Technology and Education)"},{"code":"WB4-2","paper":"P00055","time":"11:00 ~ 11:20","title":"Shape Optimization Method for Membrane Antennas with Crease-Wrinkle Coupled Deformation Mechanism","authors":"Wang Zhong”, Yiqun Zhang, and Naigang Hu (Xidian University)"},{"code":"WB4-3","paper":"P00062","time":"11:20 ~ 11:40","title":"Concurrent Shape and Topology Optimization with Varying Design Domain of Coated Porous Structure","authors":"Marc Naguib* and Masatoshi Shimoda (Toyota Technological Institute)"},{"code":"WB4-4","paper":"P00117","time":"11:40 ~ 12:00","title":"Discrete Adjoint Sensitivity-Based Level Set Topology Optimization for Multi- Material Design Byeonghyeon Goh and Sanghyeon Park (Ulsan National Institute of Science and","authors":"Technology), Hyunsun Alicia Kim (University of California San Diego), Hayoung Chung* (Ulsan National Institute of Science and Technology)"},{"code":"WB4-5","paper":"P00124","time":"12:00 ~ 12:20","title":"Crack Identification in Heat Conduction Problem by Woodbury Formula Based SBFEM and Dingo Optimization Algorithm (DOA)","authors":"Yigian He* and Haitian Yang (Dalian University of Technology)"},{"code":"WB5-1","paper":"P00021","time":"10:40 ~ 11:00","title":"Auxetic Kirigami for Distortion-Free Display in Large Stretching","authors":"Yigiang Wang* and Zhan Kang (Dalian University of Technology)"},{"code":"WB5-2","paper":"P00065","time":"11:00 ~ 11:20","title":"Simultaneous Optimization of Intermediate Die Shape and Energy Distribution in Hydraulic Hammer Forging","authors":"Taisei Tayama* and Satoshi Kitayama (Kanazawa University)"},{"code":"WB5-3","paper":"P00098","time":"11:20 ~ 11:40","title":"Multi-Material Topology Optimization of IPMSMs Integrating Post-Assembly Magnetization Analysis","authors":"Jeonghyun Park, Won Seok Song, and Seungjae Min* (Hanyang University)"},{"code":"WB5-4","paper":"P00107","time":"11:40 ~ 12:00","title":"A Formulation for Optimal Design of a Simple Linear Ratchet Mechanism Using the Third Medium Contact Method","authors":"Takahiro Nishio* and Takayuki Yamada (The University of Tokyo)"},{"code":"WB5-5","paper":"P00109","time":"12:00 ~ 12:20","title":"Nozzle Path Design Using Differential Growth of Multiple Closed Curves in Material Extrusion 3D Printing","authors":"Shin Watanabe* and Makoto Yamakawa (Tokyo University of Science), Kazuma Goto (Arup)"},{"code":"WB6-1","paper":"P00204","time":"10:40 ~ 11:00","title":"Optimization-Based Estimation of Region-Dependent Loads in the Proximal Femur","authors":"Jisun Kim and Jung Jin Kim* (Keimyung University)"},{"code":"WB6-2","paper":"P00043","time":"11:00 ~ 11:20","title":"Design Optimization of Embedded Grid Structures for Ceramic Fuel Cells Sintering Warpage","authors":"Sehyeon Kang (Pohang University of Science and Technology), Minkwan Seo and Sungsoo Shin (Incheon National University), Dongil Shin* (Pohang University of Science and Technology)"},{"code":"WB6-3","paper":"P00053","time":"11:20 ~ 11:40","title":"An Equivalent Analytical Framework for Predicting Liner-Overwrap Interfacial Pressure in Type IV Hydrogen Storage Cylinders","authors":"Xueying Lou, Yan Zhao, Yanzhi Xie, Yiyuan Wang, and Gang Li* (Dalian University of Technology)"},{"code":"WB6-4","paper":"P00093","time":"11:40 ~ 12:00","title":"Topology Optimization for Multi-Phase Conductors in Battery Modules","authors":"Sehyeon Kang*, Jaewook Lee (Gwangju Institute of Science and Technology)"},{"code":"WB6-5","paper":"P00250","time":"12:00 ~ 12:20","title":"Dynamic Modelling of SOEC System for Analyzing PI Control Strategies Under Current Loads Transient","authors":"Hyungchan Kim, Jongyun Jung, and Sanggyu Kang” (Seoul National University)"},{"code":"WC1-1","paper":"P00216","time":"13:40 ~ 14:00","title":"Topology Optimization for Two-Scale Multi-Functional Metamaterial Beam Structure Design","authors":"Long Liu* (Hefei University), Bing Yi (Central South University), Gil Ho Yoon (Hanyang University)"},{"code":"WC1-2","paper":"P00218","time":"14:00 ~ 14:20","title":"Computationally Efficient Data-Driven Topology Design Applicable to Low Information Entropy Scenarios","authors":"Jun Yang, Ziliang Wang, and Shintaro Yamasaki* (Waseda University)"},{"code":"WC1-3","paper":"P00225","time":"14:20 ~ 14:40","title":"Design Optimization of Curved Thin-Walled Lattice Structures with Variable Unit Cells","authors":"Bin Niu*, Binze Zou, and Rui Yang (Dalian University of Technology)"},{"code":"WC1-4","paper":"P00226","time":"14:40 ~ 15:00","title":"Design Optimization of Thin-Walled Stiffened Structures for Load-Bearing Performance","authors":"Binze Zou and Bin Niu* (Dalian University of Technology)"},{"code":"WC1-5","paper":"P00229","time":"15:00 ~ 15:20","title":"Efficient MATLAB Codes for 3D Topology Optimization of Composite Structures with Spatially Varying Fiber Orientations and Fiber Volume Fractions","authors":"Junpeng Zhao*, Ying Xia, and Chunjie Wang (Beihang University)"},{"code":"WC2-1","paper":"P00252","time":"13:40 ~ 14:00","title":"VAE-Based Multiscale Topology Optimization in Thermal-Fluid Systems","authors":"Ryusuke Inui, Toru Abo*, Shun Ogawa, and Katsuyuki Suzuki (The University of Tokyo)"},{"code":"WC2-2","paper":"P00315","time":"14:00 ~ 14:20","title":"A Concurrent Multiscale Topology Optimization Method for Minimizing Harmonic Displacement Response of Lattice Structures Based on the Full Method","authors":"Junjie Wang, Zhihui Liu, Yinghao Nie, and Jun Yan* (Dalian University of Technology)"},{"code":"WC2-3","paper":"P00148","time":"14:20 ~ 14:40","title":"Time-Dependent Uncertainty Quantification of Electromagnetic-Structural Responses in IPMSMs","authors":"Junhan Lee and Dongjin Lee* (Hanyang University)"},{"code":"WC2-4","paper":"P00158","time":"14:40 ~ 15:00","title":"A Novel Data-Model Dual-Driven Implicit Remaining Useful Life Prediction Method for Reusable Thin-Walled Structures","authors":"Hao Liu, Huixian Kou, and Peng Hao* (Dalian University of Technology)"},{"code":"WC2-5","paper":"P00280","time":"15:00 ~ 15:20","title":"Time-Dependent Uncertainty Quantification of EV Dynamic Responses Using PDD-NARX","authors":"Jaehun Kim and Dongjin Lee* (Hanyang University)"},{"code":"WC3-1","paper":"P00203","time":"13:40 ~ 14:00","title":"Development of a Self-Attention-Based Interstory Drift Prediction Model for Multi- Story Buildings Incorporating Interstory Correlations","authors":"Akari Kaiki* and Makoto Yamakawa (Tokyo University of Science), Kohei Seto (KOZO KEIKAKU ENGINEERING Inc.)"},{"code":"WC3-2","paper":"P00237","time":"14:00 ~ 14:20","title":"Domain-Generalized Bearing Fault Diagnosis Through Self-Supervised Learning of Vibration Representations","authors":"Chan Hee Park* (University of Seoul)"},{"code":"WC3-3","paper":"P00239","time":"14:20 ~ 14:40","title":"Machine Learning-Enhanced Variable-Node Substructure Element for Efficient Analysis and Optimal Design","authors":"Changan Ni, Yuan Liang, and Xu Guo* (Dalian University of Technology)"},{"code":"WC3-4","paper":"P00262","time":"14:40 ~ 15:00","title":"Data-Driven Multifidelity Topology Design for Hyperelastic Auxetic Metamaterials","authors":"Yusibo Yang*, Kentaro Yaji, and Kikuo Fujita (The University of Osaka)"},{"code":"WC3-5","paper":"P00264","time":"15:00 ~ 15:20","title":"Topology Optimization Using Sensitivity Prediction Model Based on U-Net","authors":"Longsen Yang*, Shun Ogawa, and Katsuyuki Suzuki (The University of Tokyo)"},{"code":"WC4-1","paper":"P00136","time":"13:40 ~ 14:00","title":"On the Computation of Functional Gradient Using Hilbertian Regularization with Boundary Integral Formulation for the Two-Dimensional Helmholtz Equation","authors":"Hiromochi Itoh (The University of Tokyo), Kei Matsushima (Hiroshima University), Takayuki Yamada” (The University of Tokyo)"},{"code":"WC4-2","paper":"P00137","time":"14:00 ~ 14:20","title":"Design Optimization of Cable-Net Materials for On-Orbit Thermal Effects","authors":"Zihan Sun*, Yiqun Zhang, Na Li, and Chonggang Du (Xidian University)"},{"code":"WC4-3","paper":"P00213","time":"14:20 ~ 14:40","title":"Optimal Shape Design with Aesthetic Features Using Initial Shape Dependency of Gradient Method","authors":"Masatoshi Shimoda”* (Toyota Technological Institute), Ryo Tsutsumi (Chuozuken Co., Ltd.), Marc Naguib (Toyota Technological Institute)"},{"code":"WC4-4","paper":"P00220","time":"14:40 ~ 15:00","title":"Shape and Topology Optimization of Transmission Towers Considering Buckling Constraints","authors":"Kazuma Toyota* and Shu Sadohara (Waseda University), Keisuke Sugita and Fumihiko Kondo (Chubu Electric Power Grid Co., Inc.), Akihiro Takezawa (Waseda University)"},{"code":"WC4-5","paper":"P00241","time":"15:00 ~ 15:20","title":"The Adaptive Joint-Driven Moving Morphable Component Method (JMMC) on 3D Topology Optimization","authors":"Diaqi Xu, Chuhui He, Chang Liu, Tianchen Cui, and Xu Guo* (Dalian University of Technology)"},{"code":"WC5-1","paper":"P00112","time":"13:40 ~ 14:00","title":"Screw Compressor Noise Reduction Using Structural Topology Optimization","authors":"Seongwon Bae*, Jongcheol Lee, and Junbeom Ha (LG Electronics), Min-Chi Chien and Sanghun Lee (LG Electronics)"},{"code":"WC5-2","paper":"P00129","time":"14:00 ~ 14:20","title":"Molecular Dynamics Analysis on the In-Plane Exchange Mechanism Between Aligned Multi-Walled Carbon Nanotube Bundles","authors":"Byeonghwa Goh (Korea Institute of Industrial Technology), Joonmyung Choi (Sungkyunkwan University), Shi Hyeong Kim” (Korea Institute of Industrial Technology)"},{"code":"WC5-3","paper":"P00130","time":"14:20 ~ 14:40","title":"Multi-Scale Variable Stiffness Design of Fiber-Reinforced Composite Materials with Considering Complex Constraints","authors":"Zunyi Duan, Yi Liu, and Bin Xu (Northwestern Polytechnical University), Jun Yan (Dalian University of Technology), Jihong Zhu* and Weihong Zhang (Northwestern Polytechnical University)"},{"code":"WC5-4","paper":"P00135","time":"14:40 ~ 15:00","title":"Exploration of the Most Comfortable Product Settings Based on EEG and ECG Measurements","authors":"Masakazu Kobayashi*, Tetta Takeuchi, and Taketo Negishi (Toyota Technological Institute)"},{"code":"WC5-5","paper":"P00156","time":"15:00 ~ 15:20","title":"ROl-Constrained Element Optimization for Laser-Induced Phased Array Ultrasonic Imaging","authors":"Hoon Jeong, Soyoung Park, and Hyunjun Kwon (University of Seoul), To Kang, Soon woo Han, and Seongin Moon (Korea Atomic Energy Research Institute), Minho Yoon* (University of Seoul)"},{"code":"WC6-1","paper":"P00113","time":"13:40 ~ 14:00","title":"Quasicrystal Nanomechanical Resonators Designed by Data-Driven Approach","authors":"Hangjin Cho (Pohang University of Science and Technology), Kawen Li and Richard Norte (Delft University of Technology), Dongil Shin* (Pohang University of Science and Technology)"},{"code":"WC6-2","paper":"P00127","time":"14:00 ~ 14:20","title":"Design Optimization of Vapor Chamber Coverage in Portable Electronic Devices","authors":"Sunyeol Gwon, Minseok Kang, and In Gwun Jang* (KAIST)"},{"code":"WC6-3","paper":"P00212","time":"14:20 ~ 14:40","title":"Design Optimization of Mechanical-Luminescent Metamaterial for Mechanical Computing","authors":"William Fawcett, Alexander Watts, and Donghyeon Ryu* (New Mexico Tech)"},{"code":"WC6-4","paper":"P00273","time":"14:40 ~ 15:00","title":"Exploring Topological Isostatic Metamaterials by Topology Optimization","authors":"diayang Li, Zongliang Du*, and Xu Guo (Dalian University of Technology)"},{"code":"WC6-5","paper":"P00076","time":"15:00 ~ 15:20","title":"Visualizing Decoupled and Feasible Regions in Multidisciplinary Design","authors":"Chamakura Sai Kumar and Palaniappan Ramu* (Indian Institute of Technology Madras)"},{"code":"WD1-1","paper":"P00231","time":"15:40 ~ 16:00","title":"Topology Optimization for Multi-Axis Machining Under Multi-Stage Process Constraints","authors":"Kota Nozaki, Shuzhi Xu, Kentaro Yaji*, and Kikuo Fujita (The University of Osaka)"},{"code":"WD1-2","paper":"P00234","time":"16:00 ~ 16:20","title":"B-DGTO: A New Topology Optimization Approach Enabling Derivable Signed Distance Feature in Density Method","authors":"Jikai Liu* and Kaixian Liang (Shandong University), Shuzhi Xu (Osaka University)"},{"code":"WD1-3","paper":"P00238","time":"16:20 ~ 16:40","title":"Breaking the Limits of Two-Layer Models for Topology Optimization of Microchannel Heat Sinks with 3D-Level Accuracy","authors":"Chih-Hsiang Chen* and Kentaro Yaji (The University of Osaka)"},{"code":"WD1-4","paper":"P00253","time":"16:40 ~ 17:00","title":"Topology Optimization of Periodic Microstructure with Misalignment for Mechanical Metamaterials","authors":"Ikumu_Watanabe* and Jiaxin Zhou (National Institute for Materials Science), Keita Kambayashi (Nagaoka University of Technology)"},{"code":"WD1-5","paper":"P00265","time":"17:00 ~ 17:20","title":"Efficient Analysis and Topology Optimization of Frame Structures with Tension- Compression Asymmetry","authors":"Zhiang Xu, Yue Mei, Zongliang Du*, and Xu Guo (Dalian University of Technology)"},{"code":"WD2-1","paper":"P00133","time":"15:40 ~ 16:00","title":"Differential Evolution-Based Topology Optimization of Turbulent Heat Transfer Using End-Constrained Spline Curves with Variable Width Sei Mineno*, Takamitsu Sasaki, Kozo Furuta, Kazuhiro Izui, and Shinji Nishiwaki","authors":"(Kyoto University)"},{"code":"WD2-2","paper":"P00182","time":"16:00 ~ 16:20","title":"A Hybrid DE-PSO with Adaptive Two-Population for Constrained Optimization","authors":"So Fukuhara* (Kagawa University), Masao Arakawa (Waseda University)"},{"code":"WD2-3","paper":"P00202","time":"16:20 ~ 16:40","title":"A Reinforcement Learning-Guided Particle Swarm Optimization with Adaptive Strategy Selection and Constraint Handling","authors":"Tsubasa Yoshida*, Ayumu Takahashi, and Yeboon Yun (Kansai University), Min Yoon (Pukyong National University)"},{"code":"WD2-4","paper":"P00302","time":"16:40 ~ 17:00","title":"Control Program Generation of Robot in Maze Using Grammatical Evolution","authors":"Zeyu Cai and Eisuke Kita* (Nagoya University)"},{"code":"WD2-5","paper":"P00320","time":"17:00 ~ 17:20","title":"Admissible-Set Coordination for Multidisciplinary Design Optimization: A Receiver-Driver Framework with Native Mixed-Integer Coupling","authors":"Muhammad Hassan Yaqoob”*, Hai Huang, and Shenyan Chen (Beihang University)"},{"code":"WD3-1","paper":"P00283","time":"15:40 ~ 16:00","title":"DeepONet-Driven Probabilistic Thermal Characterization and Inverse Parameter Sensitivity Analysis for Power Semiconductor Packages","authors":"Wonbin Song (Seoul National University), Guesuk Lee (Korea Electronics Technology Institute), Byeng Dong Youn* (Seoul National University)"},{"code":"WD3-2","paper":"P00292","time":"16:00 ~ 16:20","title":"Counterfactual Data Generation via World Models for Enhancing Industrial Safety in Rare Event Scenarios","authors":"Juhwan Han, Taehun Kim, Donghyu Lee, and Sayhee Kim (Seoul National University), Soo-Ho Jo (Dongguk University), Byeng Dong Youn* (Seoul National University)"},{"code":"WD3-3","paper":"P00312","time":"16:20 ~ 16:40","title":"Rapid Construction of FCA Interaction Matrices Based on Graph Convolutional Neural Networks","authors":"Xuyi Chen, Jun Yan, and Yinghao Nie* (Dalian University of Technology)"},{"code":"WD3-4","paper":"P00325","time":"16:40 ~ 17:00","title":"Topology-Size Optimization Design of Typical Stiffened Shell Structure Based on a Previously Proposed Engineering Method","authors":"Haowen Lyu, Shenyan Chen*, and Hai Huang (Beihang University)"},{"code":"WD3-5","paper":"P00240","time":"17:00 ~ 17:20","title":"A Deep Learning-Based Multi-Fidelity Framework for Single- and Multi-Point Aerodynamic Shape Optimization at Low Reynolds Numbers","authors":"Vishnu Prasad Armugam* and M. Sivapragasam (M.S. Ramaiah University of Applied Sciences)"},{"code":"WD4-1","paper":"P00248","time":"15:40 ~ 16:00","title":"Optimization-Based Inverse Modeling and Structural Response Assessment of Spent Nuclear Fuel Rods Considering Interfacial Bonding Behavior","authors":"Guhyeon Jeong and Sanghoon Lee* (Keimyung University)"},{"code":"WD4-2","paper":"P00259","time":"16:00 ~ 16:20","title":"Multiscale Topology Optimization of Additively Manufactured Lattice Structures with Thermal Distortion Control and Overhang Constraints","authors":"Zhihui Liu and Bin Niu* (Dalian University of Technology)"},{"code":"WD4-3","paper":"P00309","time":"16:20 ~ 16:40","title":"Modeling of Residual Stress Estimation in Additive Manufacturing","authors":"Subin Shin (KAIST), Soo Yeo! Lee (Chungnam National University), Wanchuck Woo and Hobyung Chae (Korea Atomic Energy Research Institute), Hoon Sohn* (KAIST)"},{"code":"WD4-4","paper":"P00029","time":"16:40 ~ 17:00","title":"A Fictitious Grounded Spring—Based Layout Optimization Approach Applied to Locally Resonant Structures","authors":"Jun lwasaki* and Akihiro Takezawa (Waseda University), Yuya Saito, Takeshi Matsuoka, Takahiro Komamura, Naoyuki Uchida, and Masanari Nakayama (Mitsubishi Chemical Corporation)"},{"code":"WD4-5","paper":"P00284","time":"17:00 ~ 17:20","title":"When AI Meets Partition of Unity Finite Element Method: A Promising Paradigm for AI-Enhanced Computational Solid Mechanics","authors":"Yilin Guo and Changyu Shen* (Dalian University of Technology)"},{"code":"WD5-1","paper":"P00192","time":"15:40 ~ 16:00","title":"Genetic Algorithm-Based Optimization of Contact Regions for Improving Frequency Response Correlation","authors":"Su Min Kim and Jung Jin Kim* (Keimyung University)"},{"code":"WD5-2","paper":"P00193","time":"16:00 ~ 16:20","title":"Fixed-Grid-Based Optimization of a Vibration Test Fixture Using a Genetic Algorithm to Increase Natural Frequency","authors":"Jun Won Choi and Jung Jin Kim* (Keimyung University)"},{"code":"WD5-3","paper":"P00194","time":"16:20 ~ 16:40","title":"A Machine Learning and Decision-Making Framework for Strength and Ductility Trade-Offs in Additively Manufactured AlSi9Cu3 Alloy","authors":"Mohanraj M*, Palaniappan Ramu, and Jayaganthan Rengaswamy (Indian Institute of Technology Madras)"},{"code":"WD5-4","paper":"P00232","time":"16:40 ~ 17:00","title":"Generating Disassembly Procedure Based on Positional Relations Matrix (On Generation of Minimal-Step Disassembly Sequence)","authors":"Kazuyuki Hanahara’ (lwate University), Kaori Yamada (Osaka Metropolitan University)"},{"code":"WD5-5","paper":"P00246","time":"17:00 ~ 17:20","title":"Exploiting Topology Optimization for Additively Manufacturable Injection Mold Design","authors":"Musaddiq Abdil Khaliq Maleh Al Ali, Shuzhi Xu, and Kentaro Yaji* (The University of Osaka)"},{"code":"WD6-1","paper":"P00023","time":"15:40 ~ 16:00","title":"Isotropic Stiffness and Strength of 2D Quasiperiodic Microstructure","authors":"Yuyan Zeng, Xue Yu, and Yigiang Wang* (Dalian University of Technology)"},{"code":"WD6-2","paper":"P00164","time":"16:00 ~ 16:20","title":"Material-Process Optimization of Plasma-Activated Dielectric Bonding for Enhanced Bonding Energy via Reactive Molecular Dynamics Simulations","authors":"Juheon Kim and Hayoung Chung* (Ulsan National Institute of Science and Technology)"}],"dayBlocks":{"mon":{"date":"2026.05.18 (Mon)","blocks":[{"code":"A","start":"13:20","end":"15:20","slots":["13:20","13:40","14:00","14:20","14:40","15:00"]},{"code":"B","start":"15:40","end":"17:40","slots":["15:40","16:00","16:20","16:40","17:00","17:20"]}]},"tue":{"date":"2026.05.19 (Tue)","blocks":[{"code":"A","start":"08:40","end":"10:20","slots":["08:40","09:00","09:20","09:40","10:00"]},{"code":"B","start":"10:40","end":"12:20","slots":["10:40","11:00","11:20","11:40","12:00"]},{"code":"C","start":"16:00","end":"17:40","slots":["16:00","16:20","16:40","17:00","17:20"]}]},"wed":{"date":"2026.05.20 (Wed)","blocks":[{"code":"A","start":"08:40","end":"10:20","slots":["08:40","09:00","09:20","09:40","10:00"]},{"code":"B","start":"10:40","end":"12:20","slots":["10:40","11:00","11:20","11:40","12:00"]},{"code":"C","start":"13:40","end":"15:20","slots":["13:40","14:00","14:20","14:40","15:00"]},{"code":"D","start":"15:40","end":"17:20","slots":["15:40","16:00","16:20","16:40","17:00"]}]}}};
+
+const ROOMS = [
+  {name: 'Room 1', loc: '214-215'},
+  {name: 'Room 2', loc: '216'},
+  {name: 'Room 3', loc: '217'},
+  {name: 'Room 4', loc: '218'},
+  {name: 'Room 5', loc: '213'},
+  {name: 'Room 6', loc: '212'}
+];
+
+// Special events embedded in the day schedule
+const DAY_EVENTS = {
+  mon: {
+    label: '2026.05.18 (Mon)',
+    events: [
+      {time: '08:30 ~ 09:20', type: 'event', label: 'Registration (Lobby, 2F)'},
+      {time: '09:20 ~ 09:40', type: 'ceremony', label: 'Opening Ceremony (Room 1+2)'},
+      {time: '09:40 ~ 11:40', type: 'plenary', label: 'Plenary Lectures 1 ~ 3 (Room 1+2)',
+        desc: '<p><strong>09:40 ~ 10:20</strong> [Plenary 1] Interval Process for Dynamic Uncertainty Analysis — Prof. Chao Jiang (Hunan University)</p>' +
+              '<p><strong>10:20 ~ 11:00</strong> [Plenary 2] Advanced Design and Manufacturing Considering Nonlinear Structural Behavior — Prof. Junji Kato (Nagoya University)</p>' +
+              '<p><strong>11:00 ~ 11:40</strong> [Plenary 3] Design Optimization Techniques in Aerospace Engineering — Prof. Sangho Kim (Konkuk University)</p>' +
+              '<p style="margin-top:6px;font-size:11px;opacity:0.7">Session Chair: Prof. Ikjin Lee (KAIST)</p>'},
+      {time: '11:40 ~ 12:00', type: 'break', label: 'Photo Time'},
+      {time: '12:00 ~ 13:20', type: 'lunch', label: 'Lunch'},
+      {block: 'A'},  // MA1-MA6 (13:20-15:20)
+      {time: '15:20 ~ 15:40', type: 'break', label: 'Coffee Break'},
+      {block: 'B'},  // MB1-MB6 (15:40-17:40)
+      {time: '17:40 ~ 17:50', type: 'break', label: 'Break'},
+      {time: '17:50 ~ 19:00', type: 'event', label: 'Welcome Reception (BEXCO, Exhibition Center I, Room 311-313)'},
+      {time: '19:00 ~ 20:30', type: 'event', label: 'ASSMO EC/GC Meeting (Room 211) — Invited Only'}
+    ]
+  },
+  tue: {
+    label: '2026.05.19 (Tue)',
+    events: [
+      {time: '08:00 ~', type: 'event', label: 'Registration (Lobby, 2F)'},
+      {block: 'A'},  // TA1-TA6 (08:40-10:20)
+      {time: '10:20 ~ 10:40', type: 'break', label: 'Coffee Break'},
+      {block: 'B'},  // TB1-TB6 (10:40-12:20)
+      {time: '12:20 ~ 13:40', type: 'lunch', label: 'Lunch'},
+      {time: '13:40 ~ 15:40', type: 'plenary', label: 'Keynote Lectures 1 ~ 4 (Room 1)',
+        desc: '<p><strong>13:40 ~ 14:10</strong> [Keynote 1] Explicit Topology Optimization for Mechanical Metamaterials: Recent Advances and Perspectives — Prof. Zongliang Du (Dalian University of Technology)</p>' +
+              '<p><strong>14:10 ~ 14:40</strong> [Keynote 2] Human-Centered Optimization in Design Engineering — Prof. Takanori Chihara (Kanazawa University)</p>' +
+              '<p><strong>14:40 ~ 15:10</strong> [Keynote 3] From Points to Patterns: Rethinking Optimization Landscapes Using iSOM — Prof. Palaniappan Ramu (Indian Institute of Technology Madras)</p>' +
+              '<p><strong>15:10 ~ 15:40</strong> [Keynote 4] Data-Driven Modeling with Data Fusion Technique and Its Application to Topology Optimization — Prof. Ikjin Lee (KAIST)</p>' +
+              '<p style="margin-top:6px;font-size:11px;opacity:0.7">Session Chair: Prof. Gil Ho Yoon (Hanyang University)</p>'},
+      {time: '15:40 ~ 16:00', type: 'break', label: 'Coffee Break'},
+      {block: 'C'},  // TC1-TC6 (16:00-17:40)
+    ]
+  },
+  wed: {
+    label: '2026.05.20 (Wed)',
+    events: [
+      {time: '08:00 ~', type: 'event', label: 'Registration (Lobby, 2F)'},
+      {block: 'A'},  // WA1-WA6 (08:40-10:20)
+      {time: '10:20 ~ 10:40', type: 'break', label: 'Coffee Break'},
+      {block: 'B'},  // WB1-WB6 (10:40-12:20)
+      {time: '12:20 ~ 13:40', type: 'lunch', label: 'Lunch'},
+      {block: 'C'},  // WC1-WC6 (13:40-15:20)
+      {time: '15:20 ~ 15:40', type: 'break', label: 'Coffee Break'},
+      {block: 'D'},  // WD1-WD6 (15:40-17:20)
+      {time: '17:20 ~ 17:30', type: 'break', label: 'Break'},
+      {time: '17:30 ~ 19:30', type: 'event', label: 'Banquet (BEXCO, Convention Hall, Room 301 Grand Ballroom)'},
+      {time: '19:30 ~ 22:30', type: 'event', label: 'Technical Tour — Applicants Only'}
+    ]
+  }
+};
+
+const grid = document.getElementById('schedule');
+const modal = document.getElementById('modal');
+let activeFilter = 'all';
+let currentDay = 'mon';
+
+// Helper: clean cell-display author string
+// Strategy: show first author + their affiliation (or the shared affiliation), then "et al. (+N)"
+function cellAuthor(fullAuthors) {
+  if (!fullAuthors) return '';
+  // Split by top-level commas (ignoring commas inside parens)
+  const parts = [];
+  let depth = 0, cur = '';
+  for (const ch of fullAuthors) {
+    if (ch === '(') depth++;
+    else if (ch === ')') depth--;
+    if (ch === ',' && depth === 0) {
+      parts.push(cur.trim()); cur = '';
+    } else cur += ch;
+  }
+  if (cur.trim()) parts.push(cur.trim());
+  if (parts.length === 0) return fullAuthors;
+  if (parts.length === 1) return parts[0];
+
+  // First author = first token of first part (e.g. "Jike Han*")
+  const firstPart = parts[0];
+  // If first part already has affiliation in parens, use it as-is
+  if (firstPart.includes('(')) {
+    return firstPart + ` et al. (+${parts.length - 1})`;
+  }
+  // Otherwise, find the first affiliation appearing in the full string
+  const affilMatch = fullAuthors.match(/\(([^)]+)\)/);
+  const affil = affilMatch ? affilMatch[1] : '';
+  return `${firstPart}${affil ? ' (' + affil + ')' : ''} et al. (+${parts.length - 1})`;
+}
+
+// Author display with presenter highlight (asterisk indicates presenter)
+function fmtAuthors(fullAuthors) {
+  return fullAuthors.replace(/(\S+\*)/g, '<span class="presenter">$1</span>');
+}
+
+function renderHeader() {
+  let html = '<div class="grid-header time-head">TIME</div>';
+  ROOMS.forEach((r, i) => {
+    html += `<div class="grid-header"><span class="room-no">ROOM ${String(i+1).padStart(2,'0')}</span>${r.name}<span class="room-loc">${r.loc}</span></div>`;
+  });
+  return html;
+}
+
+function renderDay(dayKey) {
+  let html = renderHeader();
+  const dayInfo = DAY_EVENTS[dayKey];
+
+  for (const evt of dayInfo.events) {
+    if (evt.block) {
+      // Render a block of session columns
+      html += renderBlock(dayKey, evt.block);
+    } else {
+      // Render full-row event
+      const desc = evt.desc ? `<div class="row-desc">${evt.desc}</div>` : '';
+      const cls = `full-row ${evt.type || 'event'}`;
+      html += `<div class="time-cell">${evt.time}</div>`;
+      html += `<div class="${cls}"><div class="row-title">${evt.label}</div>${desc}</div>`;
+    }
+  }
+  return html;
+}
+
+function renderBlock(dayKey, blockCode) {
+  // Find session for each room in this block
+  const dayLetter = {mon: 'M', tue: 'T', wed: 'W'}[dayKey];
+  const sessionsInBlock = [];
+  for (let r = 1; r <= 6; r++) {
+    const code = `${dayLetter}${blockCode}${r}`;
+    sessionsInBlock.push({roomIdx: r-1, code, session: DATA.sessions[code] || null});
+  }
+  if (sessionsInBlock.every(s => !s.session)) return '';
+
+  // Block marker
+  const block = DATA.dayBlocks[dayKey].blocks.find(b => b.code === blockCode);
+  if (!block) return '';
+
+  let html = `<div class="block-marker">
+    <span class="block-time">${block.start} ~ ${block.end} · Block ${blockCode}</span>
+    <span>20-minute slots · ${block.slots.length} time slots</span>
+  </div>`;
+
+  // Session headers
+  html += `<div class="session-head-time">SESSION</div>`;
+  for (const {roomIdx, code, session} of sessionsInBlock) {
+    if (session) {
+      html += `<div class="session-head-cell" data-session-code="${code}">
+        <span class="cat-stripe"></span>
+        <span class="sh-code">${code} · ORAL</span>
+        ${session.name}
+        ${session.chair ? `<div class="sh-chair">Chair: ${session.chair}</div>` : ''}
+      </div>`;
+    } else {
+      html += `<div class="session-head-cell empty"></div>`;
+    }
+  }
+
+  // Slot rows
+  block.slots.forEach((slot, slotIdx) => {
+    const slotEnd = slotIdx + 1 < block.slots.length ? block.slots[slotIdx + 1] : block.end;
+    html += `<div class="time-cell"><span>${slot}</span><span class="time-end">~ ${slotEnd}</span></div>`;
+    for (const {roomIdx, code, session} of sessionsInBlock) {
+      if (!session) {
+        html += `<div class="talk empty"></div>`;
+        continue;
+      }
+      // Find talk with matching time start
+      const talkCode = `${code}-${slotIdx + 1}`;
+      const talk = DATA.talks.find(t => t.code === talkCode);
+      if (!talk) {
+        html += `<div class="talk empty"></div>`;
+        continue;
+      }
+      const dimClass = activeFilter === 'all' || activeFilter === 'oral' ? '' : 'dimmed';
+      html += `<div class="talk cat-oral ${dimClass}" data-talk-code="${talkCode}">
+        <span class="talk-cat-bar"></span>
+        <div class="talk-code-mini">${talk.code} · ${talk.paper}</div>
+        <div class="talk-title-mini">${escapeHtml(talk.title)}</div>
+        <div class="talk-author-mini">${escapeHtml(cellAuthor(talk.authors))}</div>
+      </div>`;
+    }
+  });
+  return html;
+}
+
+function escapeHtml(s) {
+  if (!s) return '';
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function showTalkModal(talkCode) {
+  const talk = DATA.talks.find(t => t.code === talkCode);
+  if (!talk) return;
+  const sessionCode = talk.code.split('-')[0];
+  const session = DATA.sessions[sessionCode];
+  const room = `Room ${session.room_no} (${session.room_loc})`;
+
+  document.getElementById('modalTag').textContent = `${session.day} · ${talk.time} · ${room}`;
+  document.getElementById('modalTitle').textContent = '';
+  document.getElementById('modalMeta').innerHTML = `<strong>Session</strong> ${session.name} · <strong>Chair</strong> ${session.chair}`;
+
+  document.getElementById('modalBody').innerHTML = `
+    <div class="talk-full-title">${escapeHtml(talk.title)}</div>
+    <div class="talk-full-authors">${fmtAuthors(escapeHtml(talk.authors))}</div>
+    <div class="talk-full-code">KSME ${talk.code} · Paper ${talk.paper}</div>
+  `;
+  modal.classList.add('show');
+}
+
+function showSessionModal(sessionCode) {
+  const session = DATA.sessions[sessionCode];
+  if (!session) return;
+  const sessionTalks = DATA.talks.filter(t => t.code.startsWith(sessionCode + '-'))
+    .sort((a, b) => parseInt(a.code.split('-')[1]) - parseInt(b.code.split('-')[1]));
+
+  document.getElementById('modalTag').textContent = `${sessionCode} · ${session.day} · ${session.time_start} ~ ${session.time_end}`;
+  document.getElementById('modalTitle').textContent = session.name;
+  document.getElementById('modalMeta').innerHTML = `<strong>Room</strong> ${session.room_no} (${session.room_loc}) · <strong>Chair</strong> ${session.chair}`;
+
+  let body = `<div class="session-info-box">${sessionTalks.length} oral presentations in this session.</div>`;
+  body += `<ul class="session-talk-list">`;
+  for (const t of sessionTalks) {
+    body += `<li>
+      <div class="stl-time">${t.time}</div>
+      <div class="stl-content">
+        <div class="stl-title">${escapeHtml(t.title)}</div>
+        <div class="stl-author">${fmtAuthors(escapeHtml(t.authors))}</div>
+        <div class="stl-code">${t.code} · ${t.paper}</div>
+      </div>
+    </li>`;
+  }
+  body += `</ul>`;
+  document.getElementById('modalBody').innerHTML = body;
+  modal.classList.add('show');
+}
+
+function hideModal() { modal.classList.remove('show'); }
+
+function applyFilter() {
+  document.querySelectorAll('.talk').forEach(el => {
+    if (!el.dataset.talkCode) return;
+    if (activeFilter === 'all' || activeFilter === 'oral') {
+      el.classList.remove('dimmed');
+    } else {
+      el.classList.add('dimmed');
+    }
+  });
+}
+
+function bindEvents() {
+  document.querySelectorAll('.talk').forEach(el => {
+    if (!el.dataset.talkCode) return;
+    el.addEventListener('click', () => showTalkModal(el.dataset.talkCode));
+  });
+  document.querySelectorAll('.session-head-cell').forEach(el => {
+    if (!el.dataset.sessionCode) return;
+    el.addEventListener('click', () => showSessionModal(el.dataset.sessionCode));
+  });
+}
+
+function init() {
+  grid.innerHTML = renderDay(currentDay);
+  bindEvents();
+
+  document.querySelectorAll('.day-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.day-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      currentDay = tab.dataset.day;
+      grid.innerHTML = renderDay(currentDay);
+      bindEvents();
+    });
+  });
+
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeFilter = btn.dataset.filter;
+      applyFilter();
+    });
+  });
+
+  document.getElementById('modalClose').addEventListener('click', hideModal);
+  modal.addEventListener('click', e => { if (e.target === modal) hideModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') hideModal(); });
+
+  // Venue toggle
+  const venueToggle = document.getElementById('venueToggle');
+  const venueSection = document.getElementById('venueSection');
+  if (venueToggle && venueSection) {
+    venueToggle.addEventListener('click', () => venueSection.classList.toggle('open'));
+  }
+}
+
+init();
+</script>
+</body>
+</html>
